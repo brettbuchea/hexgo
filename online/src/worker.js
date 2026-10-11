@@ -70,7 +70,7 @@ export default {
       // cannot be traced back to an address and means nothing the next day.
       const day = new Date().toISOString().slice(0, 10);
       const who = (await hashOf(visitor + '|' + day)).slice(0, 16);
-      if (!(await env.LIMITER.get(env.LIMITER.idFromName('new-games')).take(who, day))) return json({ error: TOO_FAST }, 429, cors);
+      if (!(await env.LIMITER.get(env.LIMITER.idFromName('games-' + day)).take(who, day))) return json({ error: TOO_FAST }, 429, cors);
       const b = await request.json().catch(() => null);
       if (!b || !SIDES.includes(b.side) || typeof b.komi !== 'number' || !(b.komi >= 0 && b.komi <= 20) ||
           !SEATS.includes(b.colour) || !validSecret(b.secret)) return json({ error: 'Bad game settings.' }, 400, cors);
@@ -103,8 +103,8 @@ function position(game) {
   return { board, stones, toMove, passes, history };
 }
 
-// Counts new games: per visitor per minute (in memory) and per visitor and overall per day (stored,
-// and replaced when the date changes).
+// Counts new games: per visitor per minute (in memory) and per visitor and overall per day (stored).
+// There is one of these per date, and it deletes itself two days later.
 export class Limiter extends DurableObject {
   constructor(ctx, env) {
     super(ctx, env);
@@ -114,7 +114,7 @@ export class Limiter extends DurableObject {
   async take(who, day) {
     const now = Date.now();
     let d = await this.ctx.storage.get('day');
-    if (!d || d.day !== day) d = { day, total: 0, visitors: {} };
+    if (!d) { d = { day, total: 0, visitors: {} }; await this.ctx.storage.setAlarm(now + 2 * 86400000); }
     const times = (this.recent.get(who) || []).filter((t) => now - t < 60000);
     if (times.length >= NEW_PER_MINUTE || (d.visitors[who] || 0) >= NEW_PER_DAY || d.total >= NEW_PER_DAY_EVERYONE) return false;
     if (this.recent.size > 2000) this.recent.clear();
@@ -125,6 +125,8 @@ export class Limiter extends DurableObject {
     await this.ctx.storage.put('day', d);
     return true;
   }
+
+  async alarm() { await this.ctx.storage.deleteAll(); }
 }
 
 export class Game extends DurableObject {
