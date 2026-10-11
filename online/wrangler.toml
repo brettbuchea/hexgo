@@ -1,0 +1,34 @@
+name = "hexgo-online"
+main = "src/worker.js"
+compatibility_date = "2026-01-01"
+
+# One Game object per online game; it holds the moves and relays them to both players.
+[[durable_objects.bindings]]
+name = "GAMES"
+class_name = "Game"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Game"]
+
+[vars]
+# Pages allowed to use the server (comma-separated). A page on localhost is always allowed.
+ALLOWED_ORIGINS = "https://brettbuchea.github.io"
+
+# Counts new games so nobody can flood the server (see Limiter in src/worker.js).
+[[durable_objects.bindings]]
+name = "LIMITER"
+class_name = "Limiter"
+
+[[migrations]]
+tag = "v2"
+new_sqlite_classes = ["Limiter"]
+
+# A looser limit on connections to games from one internet address. Cloudflare counts this
+# per one of its locations and only approximately.
+[[ratelimits]]
+name = "CONNECT_PER_VISITOR"
+namespace_id = "1003"
+  [ratelimits.simple]
+  limit = 60
+  period = 60

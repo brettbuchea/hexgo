@@ -1,0 +1,1326 @@
+<title>HexGo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+  /* Layout: a quiet shell-grey page around one warm object, the wooden board. Mincho display
+     type for names and numerals, a plain gothic for everything read or pressed. */
+  :root {
+    --bg: #eceee9; --surface: #f8f9f6; --ink: #1b2123; --muted: #586365; --line: #cdd4ce;
+    --accent: #0d6b5e; --accent-ink: #ffffff; --danger: #b3342a;
+    --board: #dbb878; --board-edge: #a9844a; --cell-line: #94713a; --dish: #cda663;
+    --stone-b: #17191a; --stone-b-hi: #565c60; --stone-w: #fdfcf8; --stone-w-lo: #d5d0c4; --stone-edge: #6d6a62;
+    --b-mark: #0a5a4f; --b-danger: #b52d22; --b-last: #20a08b;
+    --display: "Shippori Mincho", "Hiragino Mincho ProN", Georgia, serif;
+    --body: "Zen Kaku Gothic New", "Hiragino Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121617; --surface: #1b2022; --ink: #e8ece9; --muted: #9aa5a5; --line: #2f3739;
+      --accent: #5cc2ad; --accent-ink: #0b1413; --danger: #f07a6e;
+      --board: #b9955b; --board-edge: #7f6335; --cell-line: #6d5329; --dish: #a98650;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121617; --surface: #1b2022; --ink: #e8ece9; --muted: #9aa5a5; --line: #2f3739;
+    --accent: #5cc2ad; --accent-ink: #0b1413; --danger: #f07a6e;
+    --board: #b9955b; --board-edge: #7f6335; --cell-line: #6d5329; --dish: #a98650;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font: 16px/1.6 var(--body); }
+  .site { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 0 48px; }
+  h1, h2, h3, p, ol, ul, figure { margin: 0; }
+  h1, h2 { font-family: var(--display); font-weight: 800; line-height: 1.15; text-wrap: balance; }
+  h1 { font-size: clamp(30px, 5vw, 40px); }
+  h2 { font-size: 24px; }
+  h3 { font-size: 15px; font-weight: 700; }
+  a { color: var(--accent); }
+  .lead { font-size: 17px; color: var(--muted); max-width: 60ch; }
+  .small { font-size: 13px; color: var(--muted); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Header */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px;
+         border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 10px; font: 800 22px/1 var(--display); color: var(--ink); text-decoration: none; }
+  .brand svg { width: 28px; height: 28px; flex: none; }
+  .top nav { display: flex; gap: 4px; }
+  .top nav a { padding: 8px 16px; border-radius: 999px; color: var(--ink); text-decoration: none; font-weight: 500; }
+  .top nav a:hover { background: var(--surface); }
+  .top nav a[aria-current="page"] { background: var(--ink); color: var(--bg); }
+
+  .view { display: flex; flex-direction: column; gap: 32px; padding-block: 32px 0; }
+
+  /* Buttons and controls */
+  button, select { font: inherit; color: var(--ink); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; padding: 9px 18px; border-radius: 999px;
+         border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 500; text-decoration: none; color: var(--ink); }
+  .btn:hover { border-color: var(--muted); }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }
+  .btn.big { padding: 12px 26px; font-size: 17px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  select { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); }
+
+  /* Board */
+  .board svg { display: block; width: 100%; height: auto; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .b-back { fill: var(--board-edge); }
+  .b-cell { fill: var(--board); stroke: var(--cell-line); stroke-width: 1; }
+  .b-cell.tap { cursor: pointer; }
+  .b-dish { fill: var(--dish); opacity: .5; pointer-events: none; }
+  .b-layer { pointer-events: none; }
+  .st-b { fill: url(#gB); }
+  .st-w { fill: url(#gW); stroke: var(--stone-edge); stroke-width: .8; }
+  .st-dead { opacity: .38; } .st-ghost { opacity: .5; } .st-gone { opacity: .26; }
+  .gb-hi { stop-color: var(--stone-b-hi); } .gb-lo { stop-color: var(--stone-b); }
+  .gw-hi { stop-color: var(--stone-w); } .gw-lo { stop-color: var(--stone-w-lo); }
+  .m-last { fill: none; stroke: var(--b-last); stroke-width: 2.4; }
+  .m-danger { fill: none; stroke: var(--b-danger); stroke-width: 2; stroke-dasharray: 4 3; }
+  .m-cross { stroke: var(--b-danger); stroke-width: 3; stroke-linecap: round; }
+  .m-illegal { fill: var(--b-danger); opacity: .32; }
+  .m-pair { fill: var(--b-mark); }
+  .m-eye { fill: none; stroke: var(--b-mark); stroke-width: 2.6; }
+  .t-b { fill: var(--stone-b); }
+  .t-w { fill: var(--stone-w); stroke: var(--stone-edge); stroke-width: .6; }
+
+  /* Home */
+  .hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 40px; align-items: center; }
+  .hero-text { display: flex; flex-direction: column; gap: 20px; }
+  .hero h1 { font-size: clamp(38px, 6.4vw, 62px); letter-spacing: -.01em; }
+  .hero-board { display: flex; flex-direction: column; gap: 8px; }
+  .hero-board p { text-align: center; font-variant-numeric: tabular-nums; }
+  .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; border-top: 1px solid var(--line); padding-top: 28px; }
+  .fact { display: flex; gap: 14px; align-items: baseline; }
+  .fact b { font: 800 44px/1 var(--display); color: var(--accent); }
+  .fact span { min-width: 0; }
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; gap: 24px; }
+    .facts { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  /* Play: setup */
+  .head { display: flex; flex-direction: column; gap: 8px; }
+  .modes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 640px; }
+  .mode { position: relative; }
+  .mode input, .seg input { position: absolute; opacity: 0; pointer-events: none; }
+  .mode label { display: flex; flex-direction: column; gap: 4px; height: 100%; padding: 16px 18px; border-radius: 14px;
+                border: 1.5px solid var(--line); background: var(--surface); cursor: pointer; }
+  .mode label b { font: 800 20px/1.2 var(--display); }
+  .mode label span { font-size: 14px; color: var(--muted); }
+  .mode input:checked + label { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  .mode input:focus-visible + label, .seg input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .mode input:disabled + label { cursor: default; background: transparent; border-style: dashed; }
+  .mode input:disabled + label b { color: var(--muted); }
+  .tag { align-self: flex-start; margin-top: 6px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--line);
+         font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .setup { display: flex; flex-direction: column; gap: 22px; max-width: 640px; }
+  .field { display: flex; flex-direction: column; gap: 8px; border: 0; padding: 0; margin: 0; min-width: 0; }
+  .field > legend, .field > .legend { padding: 0; font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+  .field > legend { margin-bottom: 8px; }
+  .seg { display: flex; flex-wrap: wrap; gap: 8px; }
+  .seg > div { position: relative; }
+  .seg label { display: block; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 500; }
+  .seg input:checked + label { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+
+  /* Play: game */
+  .game { display: grid; grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: "board players" "board controls";
+          grid-template-rows: auto 1fr; gap: 16px 28px; align-items: start; }
+  .g-board { grid-area: board; max-width: 680px; width: 100%; justify-self: center; display: flex; flex-direction: column; gap: 10px; }
+  .g-players { grid-area: players; display: flex; flex-direction: column; gap: 10px; }
+  .g-controls { grid-area: controls; display: flex; flex-direction: column; gap: 16px; }
+  @media (max-width: 860px) {
+    .game { grid-template-columns: minmax(0, 1fr); grid-template-areas: "players" "board" "controls"; grid-template-rows: auto; }
+  }
+  .players { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .player { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--line); min-width: 0; }
+  .player.on { border-color: var(--accent); background: var(--surface); }
+  .player .who { min-width: 0; flex: 1; display: flex; flex-direction: column; line-height: 1.25; }
+  .player .who b { overflow-wrap: anywhere; }
+  .player .who span { font-size: 13px; color: var(--muted); }
+  .player .cap { font: 800 22px/1 var(--display); font-variant-numeric: tabular-nums; }
+  .dot { width: 22px; height: 22px; border-radius: 50%; flex: none; border: 1px solid var(--stone-edge); }
+  .dot.b { background: var(--stone-b); } .dot.w { background: var(--stone-w); }
+  .turn { font-weight: 700; font-size: 17px; }
+  .status { min-height: 1.6em; font-size: 14px; color: var(--muted); }
+  .status.err { color: var(--danger); }
+  .thinking::after { content: ""; display: inline-block; width: 8px; height: 8px; margin-left: 8px; border-radius: 50%;
+                     background: var(--accent); animation: pulse 1s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .2; } }
+  .scrub { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .scrub input { flex: 1; min-width: 0; accent-color: var(--accent); }
+  .scrub .btn { padding: 4px 12px; }
+  .share { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--surface); }
+  .share .legend { font-size: 13px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+  .share .row { flex-wrap: nowrap; }
+  .share input { flex: 1; min-width: 0; font: inherit; font-size: 14px; color: var(--ink); padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); }
+  .check { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; }
+  .check input { margin-top: 5px; accent-color: var(--accent); }
+  .scorebox { display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 14px; border: 1.5px solid var(--accent); background: var(--surface); }
+  .scorebox h2 { font-size: 26px; }
+  .scoretable { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .scoretable th, .scoretable td { padding: 4px 0; text-align: right; border-bottom: 1px solid var(--line); }
+  .scoretable th:first-child, .scoretable td:first-child { text-align: left; font-weight: 400; color: var(--muted); }
+  .scoretable tr:last-child td { border-bottom: 0; font-weight: 700; font-size: 16px; }
+
+  /* Learn */
+  .learn { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; align-items: start; }
+  .toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); display: flex; flex-direction: column; gap: 2px; }
+  .toc a { padding: 5px 0; color: var(--ink); text-decoration: none; font-size: 15px; }
+  .toc a:hover { color: var(--accent); }
+  .lessons { display: flex; flex-direction: column; gap: 44px; min-width: 0; }
+  .lesson { display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 16px; }
+  .lesson > p, .lesson > ol, .lesson > ul { max-width: 66ch; }
+  .lesson ol, .lesson ul { padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+  .figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; max-width: 760px; }
+  .fig { display: flex; flex-direction: column; gap: 8px; min-width: 0; max-width: 360px; }
+  .fig figcaption { font-size: 14px; }
+  .try { display: inline-block; margin-right: 6px; padding: 0 8px; border-radius: 999px; background: var(--accent); color: var(--accent-ink);
+         font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+  .fig-msg { font-size: 14px; min-height: 3.2em; color: var(--muted); }
+  .fig-msg.good { color: var(--accent); font-weight: 500; }
+  .fig .btn { align-self: flex-start; padding: 4px 14px; font-size: 14px; }
+  .key { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: -1px; margin-right: 2px; }
+  .key.pair { background: var(--b-mark); } .key.eye { border: 2.5px solid var(--b-mark); }
+  .kinds { display: flex; flex-direction: column; max-width: 760px; }
+  .kind { display: grid; grid-template-columns: minmax(0, 1fr) 170px 170px; gap: 16px; align-items: center; padding-block: 14px; border-top: 1px solid var(--line); }
+  .kind-text { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; min-width: 0; }
+  .kind-text h3 { font-size: 17px; }
+  .kind-text p { font-size: 14px; }
+  .kind .fig { gap: 2px; }
+  .kind .fig figcaption { font-size: 12px; text-align: center; color: var(--muted); }
+  .verdict { padding: 1px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+             border: 1.5px solid var(--muted); color: var(--muted); }
+  .verdict.safe { border-color: var(--accent); color: var(--accent); }
+  .verdict.bad { border-color: var(--danger); color: var(--danger); }
+  @media (max-width: 620px) {
+    .kind { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .kind-text { grid-column: 1 / -1; }
+  }
+  .tablewrap { overflow-x: auto; max-width: 760px; }
+  .cmp { width: 100%; min-width: 460px; border-collapse: collapse; font-size: 15px; }
+  .cmp th, .cmp td { padding: 8px 12px 8px 0; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .cmp thead th { font-size: 13px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+  .cmp tbody th { font-weight: 400; color: var(--muted); }
+  @media (max-width: 760px) {
+    .learn { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .toc { position: static; flex-direction: row; flex-wrap: wrap; gap: 6px 8px; }
+    .toc a { padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; }
+    .cmp { min-width: 0; font-size: 14px; table-layout: fixed; }
+    .cmp th, .cmp td { padding-right: 8px; }
+    .cmp th:first-child { width: 31%; }
+    .cmp thead th:nth-child(2) { width: 30%; }
+  }
+
+  footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
+  footer p { max-width: 80ch; }
+  @media (prefers-reduced-motion: reduce) { .thinking::after { animation: none; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="gB" cx="36%" cy="30%" r="72%"><stop offset="0" class="gb-hi"/><stop offset="1" class="gb-lo"/></radialGradient>
+    <radialGradient id="gW" cx="36%" cy="30%" r="80%"><stop offset=".35" class="gw-hi"/><stop offset="1" class="gw-lo"/></radialGradient>
+  </defs>
+</svg>
+
+<div class="site">
+  <header class="top">
+    <a class="brand" href="#home" data-go="home">
+      <svg viewBox="-14 -14 28 28" aria-hidden="true"><polygon points="12,0 6,10.4 -6,10.4 -12,0 -6,-10.4 6,-10.4" class="b-cell" style="stroke-width:1.6"/><circle r="5.6" class="st-b"/></svg>
+      HexGo
+    </a>
+    <nav aria-label="Sections">
+      <a href="#play" data-go="play">Play</a>
+      <a href="#learn" data-go="learn">Learn</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Home -->
+    <section id="view-home" class="view">
+      <div class="hero">
+        <div class="hero-text">
+          <h1>Go, played on hexagons.</h1>
+          <p class="lead">HexGo keeps the heart of Go: place stones, surround space, capture what you cut off. The six-sided cells change how groups live, and the edge of the board helps you build eyes.</p>
+          <div class="row">
+            <a class="btn primary big" href="#play" data-go="play">Play</a>
+            <a class="btn big" href="#learn" data-go="learn">Learn the rules</a>
+          </div>
+        </div>
+        <div class="hero-board">
+          <div class="board"><svg id="demoBoard" role="img" aria-label="A HexGo game between two computer players"></svg></div>
+          <p class="small" id="demoCaption">Two computer players on a 61-cell board.</p>
+        </div>
+      </div>
+      <div class="facts">
+        <div class="fact"><b>6</b><span>neighbours for every cell away from the edge, where a Go point has four.</span></div>
+        <div class="fact"><b>3</b><span>stones capture a lone stone in the open. Two do it on the edge, one in a corner.</span></div>
+        <div class="fact"><b>2</b><span>empty cells that touch each other keep a group on the board. One liberty is not enough.</span></div>
+      </div>
+    </section>
+
+    <!-- Play -->
+    <section id="view-play" class="view" hidden>
+      <div id="playSetup" class="view" style="padding-block:0">
+        <div class="head">
+          <h1>Play</h1>
+          <p class="lead">Choose how you want to play, then set up the board.</p>
+        </div>
+        <div class="modes" role="radiogroup" aria-label="Where to play">
+          <div class="mode">
+            <input type="radio" name="mode" id="mode-local" value="local" checked>
+            <label for="mode-local"><b>Local</b><span>On this device: play the computer or a friend sitting next to you, or watch two computers play.</span></label>
+          </div>
+          <div class="mode">
+            <input type="radio" name="mode" id="mode-online" value="online" disabled>
+            <label for="mode-online"><b>Online</b><span>Against a friend somewhere else. You send them a link.</span><span class="tag" id="onlineTag">Not yet</span></label>
+          </div>
+        </div>
+
+        <form class="setup" id="setupForm">
+          <fieldset class="field" id="oppField">
+            <legend>Opponent</legend>
+            <div class="seg">
+              <div><input type="radio" name="opp" id="opp-cpu" value="cpu" checked><label for="opp-cpu">Computer</label></div>
+              <div><input type="radio" name="opp" id="opp-person" value="person"><label for="opp-person">Two players, one device</label></div>
+              <div><input type="radio" name="opp" id="opp-watch" value="watch"><label for="opp-watch">Watch two computers</label></div>
+            </div>
+          </fieldset>
+          <div class="field" id="watchField" hidden>
+            <span class="legend">Computer players</span>
+            <div class="row">
+              <label class="row" for="watchB"><span class="dot b"></span> Black
+                <select id="watchB"><option value="200">Easy</option><option value="1000" selected>Medium</option><option value="4000">Hard</option><option value="10000">Very hard</option></select></label>
+              <label class="row" for="watchW"><span class="dot w"></span> White
+                <select id="watchW"><option value="200">Easy</option><option value="1000" selected>Medium</option><option value="4000">Hard</option><option value="10000">Very hard</option></select></label>
+            </div>
+            <p class="small">You can pause the game and step back through the moves at any time.</p>
+          </div>
+          <fieldset class="field" id="levelField">
+            <legend>Computer level</legend>
+            <div class="seg">
+              <div><input type="radio" name="level" id="lvl-200" value="200"><label for="lvl-200">Easy</label></div>
+              <div><input type="radio" name="level" id="lvl-1000" value="1000" checked><label for="lvl-1000">Medium</label></div>
+              <div><input type="radio" name="level" id="lvl-4000" value="4000"><label for="lvl-4000">Hard</label></div>
+              <div><input type="radio" name="level" id="lvl-10000" value="10000"><label for="lvl-10000">Very hard</label></div>
+            </div>
+            <p class="small" id="levelNote"></p>
+          </fieldset>
+          <fieldset class="field" id="colourField">
+            <legend>You play</legend>
+            <div class="seg">
+              <div><input type="radio" name="colour" id="col-black" value="black" checked><label for="col-black">Black, moves first</label></div>
+              <div><input type="radio" name="colour" id="col-white" value="white"><label for="col-white">White</label></div>
+            </div>
+          </fieldset>
+          <fieldset class="field">
+            <legend>Board</legend>
+            <div class="seg">
+              <div><input type="radio" name="side" id="size-4" value="4"><label for="size-4">4 per side</label></div>
+              <div><input type="radio" name="side" id="size-5" value="5" checked><label for="size-5">5 per side</label></div>
+              <div><input type="radio" name="side" id="size-6" value="6"><label for="size-6">6 per side</label></div>
+              <div><input type="radio" name="side" id="size-7" value="7"><label for="size-7">7 per side</label></div>
+            </div>
+            <p class="small" id="sizeNote"></p>
+          </fieldset>
+          <div class="field">
+            <label class="legend" for="komiSel">Points given to White for moving second</label>
+            <div class="row">
+              <select id="komiSel">
+                <option value="0">None</option><option value="4">4</option><option value="5">5</option>
+                <option value="6" selected>6</option><option value="7">7</option><option value="8">8</option>
+              </select>
+              <span class="small" id="komiNote"></span>
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn primary big" type="submit" id="startBtn">Start game</button>
+            <button class="btn big" type="button" id="resumeGameBtn" hidden>Back to current game</button>
+          </div>
+          <p class="status err" id="setupError" role="alert"></p>
+        </form>
+      </div>
+
+      <div id="playWait" class="view" style="padding-block:0" hidden>
+        <div class="head">
+          <h1>Online game</h1>
+          <p class="lead" id="waitText" aria-live="polite">Connecting to the game.</p>
+        </div>
+        <div class="row"><button class="btn" type="button" id="waitBackBtn">Back to setup</button></div>
+      </div>
+
+      <div id="playGame" class="game" hidden>
+        <div class="g-players">
+          <div class="players">
+            <div class="player" id="plB"><span class="dot b"></span><span class="who"><b id="whoB">Black</b><span>Black</span></span><span class="cap" id="capB" title="Stones captured">0</span></div>
+            <div class="player" id="plW"><span class="dot w"></span><span class="who"><b id="whoW">White</b><span>White</span></span><span class="cap" id="capW" title="Stones captured">0</span></div>
+          </div>
+          <div>
+            <div class="turn" id="turnText" aria-live="polite">Black to play</div>
+            <div class="status" id="status" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="g-board">
+          <div class="board"><svg id="gameBoard" role="img" aria-label="HexGo board"></svg></div>
+          <div class="scrub">
+            <button class="btn" type="button" id="prevBtn" aria-label="Previous move">&#9664;</button>
+            <input type="range" id="moveSlider" min="0" max="0" value="0" aria-label="Move shown">
+            <button class="btn" type="button" id="nextBtn" aria-label="Next move">&#9654;</button>
+            <span id="moveLabel">Move 0 of 0</span>
+          </div>
+        </div>
+        <div class="g-controls">
+          <div class="row" id="playBtns">
+            <button class="btn primary" type="button" id="passBtn">Pass</button>
+            <button class="btn" type="button" id="undoBtn">Undo</button>
+            <button class="btn primary" type="button" id="pauseBtn" hidden>Pause</button>
+            <button class="btn" type="button" id="resignBtn" hidden>Resign</button>
+            <span class="row" id="resignAsk" hidden><span>Resign this game?</span>
+              <button class="btn" type="button" id="resignYes">Yes, resign</button><button class="btn" type="button" id="resignNo">No</button></span>
+          </div>
+          <div class="scorebox" id="scoreBox" hidden>
+            <h2 id="scoreHead">Game over</h2>
+            <table class="scoretable" id="scoreTable">
+              <thead><tr><th></th><th>Black</th><th>White</th></tr></thead>
+              <tbody id="scoreBody"></tbody>
+            </table>
+            <p class="small" id="deadNote">Faded stones are counted as dead. If that looks wrong, tap a group to change it.</p>
+            <div class="row">
+              <button class="btn primary" type="button" id="rematchBtn">Play again</button>
+              <button class="btn" type="button" id="keepBtn">Keep playing</button>
+            </div>
+          </div>
+          <div class="share" id="sharePanel" hidden>
+            <label class="legend" for="shareLink" id="shareLabel">Send this link to your friend</label>
+            <div class="row">
+              <input type="text" id="shareLink" readonly>
+              <button class="btn" type="button" id="copyBtn">Copy</button>
+            </div>
+            <p class="small">The link is the game. Open it again in this browser to come back to your seat. A game is removed after 2 days without a move.</p>
+          </div>
+          <label class="check"><input type="checkbox" id="dangerChk" checked><span>Ring groups that can be captured with one move</span></label>
+          <p class="small" id="gameNote"></p>
+          <div class="row"><button class="btn" type="button" id="setupBtn">New game</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learn -->
+    <section id="view-learn" class="view" hidden>
+      <div class="head">
+        <h1>Learn</h1>
+        <p class="lead">The whole rule set, one idea at a time. Boards marked Try it are live: tap a cell and the game's own rules engine answers.</p>
+      </div>
+      <div class="learn">
+        <nav class="toc" aria-label="Lessons">
+          <a href="#" data-jump="l-game">The game</a>
+          <a href="#" data-jump="l-groups">Groups</a>
+          <a href="#" data-jump="l-pairs">Liberty pairs</a>
+          <a href="#" data-jump="l-edge">Edges and corners</a>
+          <a href="#" data-jump="l-eyes">Eyes</a>
+          <a href="#" data-jump="l-edge-eyes">Eyes on the edge</a>
+          <a href="#" data-jump="l-kinds">Kinds of eyes</a>
+          <a href="#" data-jump="l-triangle">The triangle of death</a>
+          <a href="#" data-jump="l-order">Who is captured first</a>
+          <a href="#" data-jump="l-repeat">No repeats</a>
+          <a href="#" data-jump="l-end">Ending and scoring</a>
+          <a href="#" data-jump="l-go">If you know Go</a>
+        </nav>
+        <div class="lessons">
+
+          <article class="lesson" id="l-game">
+            <h2>The game</h2>
+            <p>Two players, Black and White, take turns placing one stone on any empty cell. Black goes first. Stones never move. They stay where they are put unless they are captured and taken off the board.</p>
+            <p>The player with more points at the end wins. You get a point for every empty cell you have surrounded and a point for every stone you have captured. White also gets extra points for moving second, called komi. Komi is currently 6, similar to Go.</p>
+            <p>The board is a hexagon, and its size is the number of cells along one side: 5 per side has 61 cells, 7 per side has 127.</p>
+          </article>
+
+          <article class="lesson" id="l-groups">
+            <h2>Groups</h2>
+            <p>Stones of one colour that touch each other form a group. A group is captured or survives as a whole, so joining your stones together is how you make them strong.</p>
+            <div class="figs">
+              <figure class="fig" data-fig="groups"><figcaption>Three groups: a black group of three, a white group of two, and a black stone on its own.</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="lesson" id="l-pairs">
+            <h2>Liberty pairs</h2>
+            <p>An empty cell next to a group is one of its liberties. In HexGo one liberty is not enough. A group needs a <b>liberty pair</b>: two empty cells that touch each other and both touch the group.</p>
+            <p>After every move, a group with no liberty pair is captured and removed, unless it has eyes. Eyes come later.</p>
+            <div class="figs">
+              <figure class="fig" data-fig="pair"><figcaption><span class="key pair"></span> The two marked cells touch each other and both touch the white stone. That is a liberty pair, so White stays.</figcaption></figure>
+              <figure class="fig" data-fig="open"
+                data-right="Captured. The three empty cells left around the stone did not touch each other, so it had no pair."
+                data-wrong="White still has two empty cells that touch. Try another cell.">
+                <figcaption><span class="try">Try it</span> Black to play. Capture the white stone.</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="lesson" id="l-edge">
+            <h2>Edges and corners</h2>
+            <p>A stone on the edge has fewer neighbours, so it has fewer ways to make a pair. Two stones are enough to capture a stone on the edge. One stone can capture a stone in the corner.</p>
+            <div class="figs">
+              <figure class="fig" data-fig="edge"
+                data-right="Captured. The two empty cells left beside the stone do not touch each other."
+                data-wrong="White still has a pair. Look at the two empty cells on its left.">
+                <figcaption><span class="try">Try it</span> Black to play. Capture the stone on the top edge.</figcaption></figure>
+              <figure class="fig" data-fig="corner"
+                data-right="One stone was enough. The middle neighbour touches both of the others, so taking it leaves no pair."
+                data-wrong="The corner stone still has a pair. Only one cell breaks every pair at once.">
+                <figcaption><span class="try">Try it</span> Black to play. Capture the corner stone with one move.</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="lesson" id="l-eyes">
+            <h2>Eyes</h2>
+            <p>An <b>eye</b> is an empty area closed in by a single group: every stone around it belongs to that group. The empty cells inside are its eye cells, and they are counted across all of the group's eyes.</p>
+            <p>A group with at least two eye cells, a <b>pair of eyes</b>, stays on the board even when it has no liberty pair. The shape of its eyes decides how safe it is.</p>
+            <div class="figs">
+              <figure class="fig" data-fig="oneEye"
+                data-right="Captured. White was left with one eye cell and one outside liberty. They do not touch, so there is no liberty pair, and one eye cell is not a pair of eyes."
+                data-wrong="White still has its pair on the outside. Take one of those two cells.">
+                <figcaption><span class="try">Try it</span> <span class="key eye"></span> One eye cell. Black to play: capture the white ring.</figcaption></figure>
+              <figure class="fig" data-fig="twoEyes"
+                data-right="Captured. Black's stone filled one eye cell. White was judged first, had no pair of eyes and no liberty pair, and came off the board."
+                data-wrong="That does not reach White. The way in is through an eye.">
+                <figcaption><span class="try">Try it</span> <span class="key eye"></span> A pair of eyes keeps White on the board, but only just. Black to play: capture.</figcaption></figure>
+              <figure class="fig" data-fig="safeEye"
+                data-illegal="Not allowed, and that is the point. Whichever cell Black takes, White still has a pair of eyes and stays. Black's stone would have no liberty pair of its own, so it would be captured at once."
+                data-wrong="That move is legal, but it does not threaten White. Try inside the eye.">
+                <figcaption><span class="try">Try it</span> <span class="key eye"></span> Three eye cells in a row. Black to play: try to capture.</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="lesson" id="l-edge-eyes">
+            <h2>Eyes on the edge</h2>
+            <p>The edge of the board works as a wall. An area closed in by your stones and the edge is an eye, the same as one ringed completely by stones.</p>
+            <p>That makes eyes much cheaper at the edge. Five stones hold three eye cells there. In the middle of the board it takes ten.</p>
+            <div class="figs">
+              <figure class="fig" data-fig="edgeEyes"
+                data-right="Captured. It works the same as in the middle: one stone breaks the pair of eyes."
+                data-wrong="That does not reach White. The way in is through an eye.">
+                <figcaption><span class="try">Try it</span> <span class="key eye"></span> Two one-cell eyes on the top edge. Black to play: capture.</figcaption></figure>
+              <figure class="fig" data-fig="threeCellEye"
+                data-illegal="Not allowed. White keeps a pair of eyes whichever cell Black takes, and Black's stone would have no liberty pair."
+                data-wrong="That move is legal, but it does not threaten White. Try inside the eye.">
+                <figcaption><span class="try">Try it</span> <span class="key eye"></span> Five white stones and the edge hold three eye cells. Black to play: try to capture.</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="lesson" id="l-kinds">
+            <h2>Kinds of eyes</h2>
+            <p>The same shapes turn up again and again, in the middle of the board and on the edge. In each board below White has no liberties left outside, apart from the one-cell eye, which needs a liberty pair to be on the board at all. <span class="key eye"></span> marks the eye cells.</p>
+            <div class="kinds">
+              <div class="kind">
+                <div class="kind-text"><h3>One cell</h3><span class="verdict">Needs a pair</span><p>Not enough by itself. The group lasts only while it keeps a liberty pair outside.</p></div>
+                <figure class="fig" data-fig="kOneC"><figcaption>Centre, 6 stones</figcaption></figure>
+                <figure class="fig" data-fig="kOneE"><figcaption>Edge, 4 stones</figcaption></figure>
+              </div>
+              <div class="kind">
+                <div class="kind-text"><h3>Two cells together</h3><span class="verdict bad">One move captures</span><p>A stone in either cell breaks the pair of eyes, and the group comes off.</p></div>
+                <figure class="fig" data-fig="kTwoC"><figcaption>Centre, 8 stones</figcaption></figure>
+                <figure class="fig" data-fig="kTwoE"><figcaption>Edge, 5 stones</figcaption></figure>
+              </div>
+              <div class="kind">
+                <div class="kind-text"><h3>Two one-cell eyes</h3><span class="verdict bad">One move captures</span><p>Safe in Go, not here. Filling one eye breaks the pair.</p></div>
+                <figure class="fig" data-fig="kApartC"><figcaption>Centre, 11 stones</figcaption></figure>
+                <figure class="fig" data-fig="kApartE"><figcaption>Edge, 6 stones</figcaption></figure>
+              </div>
+              <div class="kind">
+                <div class="kind-text"><h3>Three in a line</h3><span class="verdict safe">Safe</span><p>Any stone played inside leaves a pair of eyes and has no liberty pair of its own, so the move is not allowed.</p></div>
+                <figure class="fig" data-fig="kRowC"><figcaption>Centre, 10 stones</figcaption></figure>
+                <figure class="fig" data-fig="kRowE"><figcaption>Edge, 5 stones</figcaption></figure>
+              </div>
+              <div class="kind">
+                <div class="kind-text"><h3>Three, bent</h3><span class="verdict safe">Safe</span><p>The same as a straight line, as long as the two end cells do not touch.</p></div>
+                <figure class="fig" data-fig="kBentC"><figcaption>Centre, 10 stones</figcaption></figure>
+                <figure class="fig" data-fig="kBentE"><figcaption>Edge, 5 stones</figcaption></figure>
+              </div>
+              <div class="kind">
+                <div class="kind-text"><h3>Two cells and one apart</h3><span class="verdict safe">Safe</span><p>Three eye cells in two eyes. A stone in either eye still leaves a pair of eyes, so it is not allowed.</p></div>
+                <figure class="fig" data-fig="kTwoOneC"><figcaption>Centre, 13 stones</figcaption></figure>
+                <figure class="fig" data-fig="kTwoOneE"><figcaption>Edge, 6 stones</figcaption></figure>
+              </div>
+              <div class="kind">
+                <div class="kind-text"><h3>Three one-cell eyes</h3><span class="verdict safe">Safe</span><p>Fill any one of them and a pair of eyes is left, so no stone can go in.</p></div>
+                <figure class="fig" data-fig="kThreeOnesC"><figcaption>Centre, 13 stones</figcaption></figure>
+                <figure class="fig" data-fig="kThreeOnesE"><figcaption>Edge, 9 stones</figcaption></figure>
+              </div>
+              <div class="kind">
+                <div class="kind-text"><h3>Three in a triangle</h3><span class="verdict bad">Dead</span><p>The triangle of death. All three cells touch each other, and that is the weakness.</p></div>
+                <figure class="fig" data-fig="kTriC"><figcaption>Centre, 9 stones</figcaption></figure>
+                <figure class="fig" data-fig="kTriE"><figcaption>Edge, 6 stones</figcaption></figure>
+              </div>
+            </div>
+          </article>
+
+          <article class="lesson" id="l-triangle">
+            <h2>The triangle of death</h2>
+            <p>Three eye cells that all touch each other look like the safest eye of the three-cell shapes. They are the only one that dies. A stone played inside a line of three has no liberty pair, so it is not allowed. A stone played inside a triangle touches the two other cells, and those two touch each other. That is a pair, so the move is legal.</p>
+            <div class="figs">
+              <figure class="fig" data-fig="tri1"><figcaption>Black plays inside. The two eye cells left are a liberty pair for the black stone, so it stays for now.</figcaption></figure>
+              <figure class="fig" data-fig="tri2"><figcaption>White captures it. That leaves White with an eye of two cells together.</figcaption></figure>
+              <figure class="fig" data-fig="tri3"
+                data-right="Captured. A two-cell eye falls to one stone, as in the list above."
+                data-wrong="That does not reach White. Play inside the eye.">
+                <figcaption><span class="try">Try it</span> Black to play: finish it.</figcaption></figure>
+            </div>
+            <p>White does no better by leaving the first black stone alone. Black adds a second stone inside, White is down to one eye cell, and the whole group is captured. Once a group surrounded on the outside depends on a triangle, it cannot be saved, so give your eye a different shape while you still can.</p>
+          </article>
+
+          <article class="lesson" id="l-order">
+            <h2>Who is captured first</h2>
+            <p>After a stone is placed, the board is checked in a fixed order.</p>
+            <ol>
+              <li>The opponent's groups are checked. Any with no liberty pair and no pair of eyes are removed.</li>
+              <li>Then the mover's own groups are checked. If one of them would be captured, the move is suicide and is not allowed.</li>
+            </ol>
+            <p>So a stone that looks doomed is legal when it captures something first. One more detail: a stone played inside an eye that cannot survive there does not break the eye open. The cell it sits on stops counting, but the rest of the eye still does.</p>
+            <div class="figs">
+              <figure class="fig" data-fig="twoCellEye"
+                data-right="Captured. Black's stone had no pair of its own, but White was judged first and removed, which gave the black stone room."
+                data-wrong="That does not reach White. Play inside the eye.">
+                <figcaption><span class="try">Try it</span> <span class="key eye"></span> White's corner eye has two cells. Black to play: capture.</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="lesson" id="l-repeat">
+            <h2>No repeats</h2>
+            <p>A move may not bring back an arrangement of the whole board that has already happened in the game. This stops two players capturing back and forth for ever. Go players call the situation ko.</p>
+          </article>
+
+          <article class="lesson" id="l-end">
+            <h2>Ending and scoring</h2>
+            <p>When you see nothing useful left to play, pass. Two passes in a row end the game. Then the score is counted.</p>
+            <ol>
+              <li>Stones that could not avoid capture are taken off as dead. They count as captures for the other player.</li>
+              <li>Each player gets one point for every empty cell in an area bordered only by their own stones, and one point for every stone captured.</li>
+              <li>White adds 6 points of komi for moving second.</li>
+            </ol>
+            <p>In computer test games with no komi, Black finished about 5 points ahead on boards of 5 and 6 per side and about 8 ahead on 4 per side. Komi is set at 6 for now, similar to Go. Because it is a whole number, a game can end in a draw.</p>
+            <div class="figs">
+              <figure class="fig" data-fig="score"><figcaption id="scoreFigCaption">A finished game. Small dots mark each player's territory.</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="lesson" id="l-go">
+            <h2>If you know Go</h2>
+            <div class="tablewrap">
+              <table class="cmp">
+                <thead><tr><th></th><th>Go</th><th>HexGo</th></tr></thead>
+                <tbody>
+                  <tr><th>Neighbours of a point</th><td>4</td><td>6</td></tr>
+                  <tr><th>To stay on the board</th><td>One liberty</td><td>A liberty pair, or a pair of eyes</td></tr>
+                  <tr><th>Stones to capture one stone</th><td>4 in the open, 3 on the edge, 2 in the corner</td><td>3 in the open, 2 on the edge, 1 in the corner</td></tr>
+                  <tr><th>Two one-point eyes</th><td>Safe for good</td><td>Can be captured. Three eye cells in a line are safe, three in a triangle are dead.</td></tr>
+                  <tr><th>The edge</th><td>Fewer liberties</td><td>Fewer liberties, and it closes off an eye</td></tr>
+                  <tr><th>Repeating a position</th><td>Ko rule, which varies by rule set</td><td>Never allowed</td></tr>
+                  <tr><th>Score</th><td>Territory and captures, or area</td><td>Territory and captures</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row"><a class="btn primary big" href="#play" data-go="play">Play a game</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="small">
+    <p>HexGo, Edge Eyes rules. The computer players use Monte Carlo tree search and run in your browser.</p>
+    <p>No accounts and no cookies. Your games and settings are kept in this browser only. An online game's moves are kept on the game server until 2 days after the last move. To stop misuse, the server counts new games per internet address for one day, in a scrambled form. The public site counts visits with Cloudflare Web Analytics.</p>
+  </footer>
+</div>
+
+<script>/*@engine*/</script>
+<script>/*@ai*/</script>
+<script>/*@lessons*/</script>
+<script>
+(() => {
+  'use strict';
+  const E = window.HexGoEngine;
+  const AI = window.hexGoAIModule(E);
+  const { EMPTY, BLACK, WHITE } = E;
+  const PASS = AI.PASS;
+  const NS = 'http://www.w3.org/2000/svg';
+  const R = 24, S3 = Math.sqrt(3); // hex circumradius in SVG units
+  const $ = (id) => document.getElementById(id);
+  const colourName = (c) => (c === BLACK ? 'Black' : 'White');
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const store = {
+    get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage is optional */ } },
+    del(k) { try { localStorage.removeItem(k); } catch (e) { /* storage is optional */ } },
+  };
+
+  // ---------- Board drawing (shared by the game, the home page and the lesson diagrams) ----------
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    parent.appendChild(e);
+    return e;
+  }
+  const centre = ([q, r]) => [R * S3 * (q + r / 2), R * 1.5 * r];
+  const hexPoints = (cx, cy, rad) => Array.from({ length: 6 }, (_, k) => {
+    const a = Math.PI / 180 * (60 * k - 30);
+    return (cx + rad * Math.cos(a)).toFixed(2) + ',' + (cy + rad * Math.sin(a)).toFixed(2);
+  }).join(' ');
+
+  // Draws an empty board into `svg` and returns { board, draw(state) }. state:
+  //   stones, last (cell), dead (Set), territory (per-cell owner), danger [cells],
+  //   pair / eye [cells to mark], gone [{ i, color }] (captured stones, shown faded and crossed),
+  //   crosses [cells], ghost { i, color }, illegal (cell)
+  function boardView(svg, side, onTap, onHover) {
+    const board = E.createBoard(side);
+    svg.textContent = '';
+    const pad = R * 0.9;
+    const w = R * S3 * (2 * side - 1) + pad * 2, h = R * 1.5 * (2 * side - 2) + 2 * R + pad * 2;
+    svg.setAttribute('viewBox', `${(-w / 2).toFixed(1)} ${(-h / 2).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
+    const rad = R * S3 * (side - 0.5) + R * 0.5;
+    el('polygon', { class: 'b-back', points: Array.from({ length: 6 }, (_, k) => {
+      const a = Math.PI / 3 * k;
+      return (rad * Math.cos(a)).toFixed(2) + ',' + (rad * Math.sin(a)).toFixed(2);
+    }).join(' ') }, svg);
+    const xy = board.cells.map(centre);
+    xy.forEach(([x, y], i) => {
+      const p = el('polygon', { points: hexPoints(x, y, R), class: 'b-cell' + (onTap ? ' tap' : '') }, svg);
+      if (onTap) p.addEventListener('click', () => onTap(i));
+      if (onHover) {
+        p.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') onHover(i); });
+        p.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') onHover(null, i); });
+      }
+    });
+    // The shallow dish each cell of the printed board has for its stone.
+    for (const [x, y] of xy) el('circle', { cx: x, cy: y, r: R * 0.5, class: 'b-dish' }, svg);
+    const layer = el('g', { class: 'b-layer' }, svg);
+
+    function draw(s) {
+      layer.textContent = '';
+      const circle = (i, r, cls) => el('circle', { cx: xy[i][0], cy: xy[i][1], r: R * r, class: cls }, layer);
+      const stone = (i, color, cls) => circle(i, 0.8, (color === BLACK ? 'st-b' : 'st-w') + (cls ? ' ' + cls : ''));
+      const cross = (i) => {
+        const [x, y] = xy[i], d = R * 0.33;
+        el('line', { x1: x - d, y1: y - d, x2: x + d, y2: y + d, class: 'm-cross' }, layer);
+        el('line', { x1: x - d, y1: y + d, x2: x + d, y2: y - d, class: 'm-cross' }, layer);
+      };
+      for (const g of s.gone || []) { stone(g.i, g.color, 'st-gone'); cross(g.i); }
+      for (let i = 0; i < board.size; i++) if (s.stones[i]) stone(i, s.stones[i], s.dead && s.dead.has(i) ? 'st-dead' : '');
+      if (s.territory) for (let i = 0; i < board.size; i++) if (s.territory[i]) circle(i, 0.2, s.territory[i] === BLACK ? 't-b' : 't-w');
+      if (s.last !== null && s.last !== undefined && s.stones[s.last]) circle(s.last, 0.3, 'm-last');
+      for (const i of s.danger || []) circle(i, 0.92, 'm-danger');
+      for (const i of s.pair || []) circle(i, 0.24, 'm-pair');
+      for (const i of s.eye || []) if (!s.stones[i]) circle(i, 0.3, 'm-eye');
+      if (s.ghost) stone(s.ghost.i, s.ghost.color, 'st-ghost');
+      for (const i of s.crosses || []) cross(i);
+      if (s.illegal !== null && s.illegal !== undefined) {
+        el('polygon', { points: hexPoints(xy[s.illegal][0], xy[s.illegal][1], R * 0.92), class: 'm-illegal' }, layer);
+      }
+    }
+    return { board, draw };
+  }
+
+  // ---------- Views ----------
+  const VIEWS = ['home', 'play', 'learn'];
+  const GAME_LINK = /^g-[a-z0-9]{6,16}$/; // the address of an online game: #g-<id>
+  function setHashTo(h) { try { history.replaceState(null, '', '#' + h); } catch (e) { /* the address is optional */ } }
+  let current = null;
+  function show(view, setHash) {
+    if (!VIEWS.includes(view)) view = 'home';
+    current = view;
+    for (const v of VIEWS) $('view-' + v).hidden = v !== view;
+    for (const a of document.querySelectorAll('.top nav a')) {
+      if (a.dataset.go === view) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    }
+    if (setHash) setHashTo(view === 'play' && net ? 'g-' + net.id : view);
+    if (view === 'learn') buildLessons();
+    window.scrollTo(0, 0);
+    demoRun();
+  }
+  document.addEventListener('click', (e) => {
+    const go = e.target.closest('[data-go]');
+    if (go) { e.preventDefault(); show(go.dataset.go, true); return; }
+    const jump = e.target.closest('[data-jump]');
+    if (jump) { e.preventDefault(); $(jump.dataset.jump).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); }
+  });
+  window.addEventListener('hashchange', () => {
+    const v = location.hash.slice(1);
+    if (GAME_LINK.test(v)) { if (!net || net.id !== v.slice(2)) openOnline(v.slice(2)); show('play'); } else if (v !== current) show(v);
+  });
+
+  // ---------- Home: a recorded computer game, replayed ----------
+  // Medium against Medium, 5 per side, seed 21 (AI.playGame, recorded with komi 5.5). Scored here with
+  // the current komi of 6 it is a draw.
+  const DEMO = { side: 5, komi: 6, seed: 21, moves: [46, 13, 16, 40, 22, 38, 39, 31, 30, 19, 53, 15, 23, 29, 45, 44, 36, 37, 51, 20, 7, 14, 9, 8, 50, 43, 27, 35, 6, 3, 11, 18, 27, 28, 54, 4, 10, 57, 33, 55, 12, 2, 32, 25, 21, 42, 48, 56, 58, 1, 55, 5, 47, 34, 31, 24, 40, 17, 49, 17, 24] };
+  const demo = (() => {
+    const view = boardView($('demoBoard'), DEMO.side);
+    const steps = [{ stones: new Uint8Array(view.board.size), last: null }];
+    const prisoners = { [BLACK]: 0, [WHITE]: 0 };
+    let toMove = BLACK;
+    for (const m of DEMO.moves) {
+      const r = E.play(view.board, steps[steps.length - 1].stones, m, toMove);
+      prisoners[toMove] += r.captured.length;
+      steps.push({ stones: r.stones, last: m });
+      toMove = E.other(toMove);
+    }
+    return { view, steps, prisoners, at: reduceMotion ? 40 : 18, hold: 0, timer: null };
+  })();
+  function demoDraw() {
+    demo.view.draw(demo.steps[demo.at]);
+    $('demoCaption').textContent = `Two computer players on a 61-cell board. Move ${demo.at} of ${demo.steps.length - 1}.`;
+  }
+  function demoRun() {
+    const on = current === 'home' && !reduceMotion && !document.hidden;
+    if (on && !demo.timer) {
+      demo.timer = setInterval(() => {
+        if (demo.at < demo.steps.length - 1) demo.at++;
+        else if (++demo.hold > 3) { demo.at = 0; demo.hold = 0; }
+        demoDraw();
+      }, 1200);
+    } else if (!on && demo.timer) { clearInterval(demo.timer); demo.timer = null; }
+  }
+  document.addEventListener('visibilitychange', demoRun);
+  demoDraw();
+
+  // ---------- Learn: diagrams ----------
+  let lessonsBuilt = false;
+  function buildLessons() {
+    if (lessonsBuilt) return;
+    lessonsBuilt = true;
+    const figs = window.hexGoLessons(E);
+    for (const fig of document.querySelectorAll('.fig[data-fig]')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'board';
+      const svg = el('svg', { role: 'img' }, wrap);
+      fig.insertBefore(wrap, fig.firstChild);
+      if (fig.dataset.fig === 'score') scoreFigure(svg); else lessonFigure(fig, svg, figs[fig.dataset.fig]);
+    }
+  }
+
+  function lessonFigure(fig, svg, f) {
+    const view = boardView(svg, f.side, f.puzzle ? onTap : null);
+    const board = view.board;
+    const at = (c) => board.index.get(c);
+    const start = new Uint8Array(board.size);
+    for (const c of f.black) start[at(c)] = BLACK;
+    for (const c of f.white) start[at(c)] = WHITE;
+    const marks = { pair: ((f.marks || {}).pair || []).map(at), eye: ((f.marks || {}).eye || []).map(at) };
+    svg.setAttribute('aria-label', fig.querySelector('figcaption').textContent.replace(/^\s*Try it\s*/, '').trim());
+    const reset = () => view.draw({ stones: start, pair: marks.pair, eye: marks.eye, last: f.last === undefined ? null : at(f.last),
+      gone: (f.gone || []).map((g) => ({ i: at(g.cell), color: g.color })) });
+    reset();
+    if (!f.puzzle) return;
+
+    const msg = document.createElement('p');
+    msg.className = 'fig-msg';
+    msg.setAttribute('aria-live', 'polite');
+    const again = document.createElement('button');
+    again.type = 'button'; again.className = 'btn'; again.textContent = 'Reset'; again.hidden = true;
+    fig.append(msg, again);
+    const say = (text, good) => { msg.textContent = text; msg.className = 'fig-msg' + (good ? ' good' : ''); again.hidden = false; };
+    again.addEventListener('click', () => { reset(); msg.textContent = ''; again.hidden = true; });
+
+    // Every tap is tried from the starting position, so a wrong guess never needs undoing.
+    function onTap(i) {
+      if (start[i]) return;
+      const r = E.play(board, start, i, BLACK);
+      if (!r.ok) {
+        view.draw({ stones: start, eye: marks.eye, illegal: i });
+        // In a "try to capture" figure the refusal is the answer.
+        say(fig.dataset.illegal || 'Not allowed: that stone would be captured at once.', !f.puzzle.solution.length);
+        return;
+      }
+      view.draw({ stones: r.stones, last: i, eye: r.captured.length ? [] : marks.eye, gone: r.captured.map((c) => ({ i: c, color: start[c] })) });
+      if (r.captured.length) say(fig.dataset.right, true); else say(fig.dataset.wrong, false);
+    }
+  }
+
+  function scoreFigure(svg) {
+    const view = boardView(svg, DEMO.side);
+    const stones = demo.steps[demo.steps.length - 1].stones;
+    const sc = AI.finalScore(view.board, stones, DEMO.komi, demo.prisoners, { seed: DEMO.seed });
+    view.draw({ stones, dead: sc.dead, territory: sc.territory });
+    svg.setAttribute('aria-label', 'A finished game with each player\'s territory marked');
+    const b = sc.detail[BLACK], w = sc.detail[WHITE], diff = sc.black - sc.white;
+    const part = (d) => `${d.territory} territory + ${d.captures + d.dead} captured`;
+    $('scoreFigCaption').textContent = `A finished game on 5 per side. Small dots mark territory. Black: ${part(b)} = ${sc.black}. ` +
+      `White: ${part(w)} + ${DEMO.komi} komi = ${sc.white}. ` +
+      (diff === 0 ? 'A draw.' : `${diff > 0 ? 'Black' : 'White'} wins by ${Math.abs(diff)}.`);
+  }
+
+  // ---------- Play: computer moves (Web Worker when possible, else the page itself) ----------
+  const workerSrc = `const E=(${window.hexGoEngineModule})();const AI=(${window.hexGoAIModule})(E);
+    onmessage=(e)=>{const m=e.data;
+      if(m.kind==='ping'){postMessage({kind:'pong'});return;}
+      const b=E.createBoard(m.side);
+      const r=AI.chooseMove(b,Uint8Array.from(m.stones),m.toMove,m.player,{komi:m.komi,seed:m.seed,history:new Set(m.history),passes:m.passes,placedBefore:m.placedBefore});
+      postMessage({kind:'move',id:m.id,move:r.move});};`;
+  let worker = null;
+  try { worker = new Worker(URL.createObjectURL(new Blob([workerSrc], { type: 'text/javascript' }))); } catch (e) { worker = null; }
+  const pending = new Map();
+  let reqId = 0;
+  const workerReady = new Promise((resolve) => {
+    if (!worker) return resolve(false);
+    const timer = setTimeout(() => resolve(false), 1500);
+    worker.onerror = () => { clearTimeout(timer); resolve(false); };
+    worker.onmessage = (e) => {
+      if (e.data.kind === 'pong') { clearTimeout(timer); resolve(true); return; }
+      const cb = pending.get(e.data.id);
+      if (cb) { pending.delete(e.data.id); cb(e.data); }
+    };
+    worker.postMessage({ kind: 'ping' });
+  });
+  async function requestMove(msg) {
+    if (await workerReady) {
+      return new Promise((resolve) => { const id = ++reqId; pending.set(id, resolve); worker.postMessage({ ...msg, id }); });
+    }
+    await new Promise((r) => setTimeout(r, 30)); // let the page show "thinking" first
+    return AI.chooseMove(E.createBoard(msg.side), Uint8Array.from(msg.stones), msg.toMove, msg.player,
+      { komi: msg.komi, seed: msg.seed, history: new Set(msg.history), passes: msg.passes, placedBefore: msg.placedBefore });
+  }
+
+  // ---------- Play: setup ----------
+  const LEVELS = {
+    200: ['Easy', 'Plays out 200 random games before each move. Quick, and makes mistakes you can punish.'],
+    1000: ['Medium', 'Plays out 1,000 random games before each move.'],
+    4000: ['Hard', 'Plays out 4,000 random games before each move. About a second a move on a fast computer.'],
+    10000: ['Very hard', 'Plays out 10,000 random games before each move. Expect a few seconds a move, longer on a phone.'],
+  };
+  const SIZES = { 4: '37 cells. A game takes a few minutes.', 5: '61 cells. A good size to learn on.',
+                  6: '91 cells.', 7: '127 cells. The largest board here, with room for several fights at once.' };
+  const KOMI = 6; // White's points for moving second; a whole number, so draws are possible
+  const radio = (name) => document.querySelector(`input[name="${name}"]:checked`).value;
+  const setRadio = (name, value) => { const r = document.querySelector(`input[name="${name}"][value="${value}"]`); if (r) r.checked = true; };
+
+  function readSetup() {
+    return { opponent: radio('opp'), level: +radio('level'), human: radio('colour'), side: +radio('side'), komi: +$('komiSel').value,
+             black: +$('watchB').value, white: +$('watchW').value };
+  }
+  const onlineChosen = () => $('mode-online').checked;
+  function syncSetup() {
+    const c = readSetup(), on = onlineChosen();
+    $('oppField').hidden = on;
+    $('levelField').hidden = on || c.opponent !== 'cpu';
+    $('colourField').hidden = !on && c.opponent !== 'cpu';
+    $('watchField').hidden = on || c.opponent !== 'watch';
+    $('startBtn').textContent = on ? 'Create game' : c.opponent === 'watch' ? 'Start watching' : 'Start game';
+    $('setupError').textContent = '';
+    $('levelNote').textContent = LEVELS[c.level][1];
+    $('sizeNote').textContent = SIZES[c.side];
+    $('komiNote').textContent = c.komi === KOMI ? 'The standard komi for now.' : `The standard komi is ${KOMI}.`;
+  }
+  $('setupForm').addEventListener('change', syncSetup);
+  $('setupForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const c = readSetup();
+    store.set('hexgo.setup', c);
+    if (onlineChosen()) { createOnline(c); return; }
+    startGame(c);
+    showPlay('game');
+  });
+  for (const r of document.querySelectorAll('input[name="mode"]')) r.addEventListener('change', syncSetup);
+  $('resumeGameBtn').addEventListener('click', () => showPlay('game'));
+  $('waitBackBtn').addEventListener('click', () => { closeNet(); showPlay('setup'); });
+
+  function showPlay(which) {
+    $('playSetup').hidden = which !== 'setup';
+    $('playWait').hidden = which !== 'wait';
+    $('playGame').hidden = which !== 'game';
+    if (current === 'play') setHashTo(which !== 'setup' && net ? 'g-' + net.id : 'play');
+    $('resumeGameBtn').hidden = !board;
+    window.scrollTo(0, 0);
+  }
+
+  // ---------- Play: the game ----------
+  // record[k] is the position after k moves: { stones, toMove, captures, lastMove, passes }.
+  // moves[k] is the move that led from record[k] to record[k + 1].
+  let cfg = null, board = null, bv = null, record, moves, view, scoring, deadSet, hover, thinking, paused, gameId = 0, seed = 0;
+
+  const cur = () => record[record.length - 1];
+  const shownIndex = () => (view === null ? record.length - 1 : view);
+  const shown = () => record[shownIndex()];
+  const historySet = () => new Set(record.map((r) => E.keyOf(r.stones)));
+  // Stones Black has placed minus stones White has placed (the computer needs it for scoring).
+  const placedSoFar = () => moves.reduce((d, m, k) => d + (m === PASS ? 0 : k % 2 === 0 ? 1 : -1), 0);
+  const humanColour = () => (cfg.human === 'white' ? WHITE : BLACK);
+  const watching = () => cfg.opponent === 'watch';
+  const online = () => !!cfg && cfg.opponent === 'online';
+  const isHuman = (color) => cfg.opponent === 'person' || ((cfg.opponent === 'cpu' || online()) && color === humanColour());
+  const isHumanTurn = () => isHuman(cur().toMove);
+  const levelOf = (color) => (watching() ? (color === BLACK ? cfg.black : cfg.white) : cfg.level);
+  const who = (color) => cfg.opponent === 'person' ? (color === BLACK ? 'Player 1' : 'Player 2')
+    : online() ? (isHuman(color) ? 'You' : 'Friend')
+    : isHuman(color) ? 'You' : `${LEVELS[levelOf(color)][0]} computer`;
+
+  function startGame(c, savedMoves) {
+    gameId++;
+    closeNet();
+    cfg = c;
+    seed = (Date.now() % 1000000) | 0;
+    bv = boardView($('gameBoard'), cfg.side, onTap, (i, left) => {
+      if (i === null && hover !== left) return;
+      hover = i; render();
+    });
+    board = bv.board;
+    record = [{ stones: new Uint8Array(board.size), toMove: BLACK, captures: { [BLACK]: 0, [WHITE]: 0 }, lastMove: null, passes: 0 }];
+    moves = []; view = null; scoring = false; deadSet = new Set(); hover = null; thinking = false; dangerKey = null;
+    paused = !!savedMoves && watching(); // a watched game that is reopened waits for Resume
+    $('whoB').textContent = who(BLACK);
+    $('whoW').textContent = who(WHITE);
+    $('gameNote').textContent = `${cfg.side} per side, ${board.size} cells. ` + (cfg.komi ? `White starts with ${cfg.komi} points.` : 'No extra points for White.');
+    setStatus('');
+    if (savedMoves) for (const m of savedMoves) if (!pushMove(m)) break;
+    setStatus('');
+    save();
+    schedule();
+  }
+
+  function save() { store.set('hexgo.game', { cfg, moves }); }
+
+  const REFUSED = { occupied: 'That cell is taken.', suicide: 'Not allowed: that stone would be captured at once.',
+                    ko: 'Not allowed: it would repeat an earlier position.' };
+
+  function pushMove(move) {
+    const c = cur();
+    if (move === PASS) {
+      record.push({ stones: c.stones, toMove: E.other(c.toMove), captures: { ...c.captures }, lastMove: null, passes: c.passes + 1 });
+      moves.push(PASS);
+      setStatus(`${colourName(c.toMove)} passed.`);
+      if (c.passes + 1 >= 2) { scoring = true; deadSet = AI.estimateDead(board, c.stones); setStatus(''); }
+      return true;
+    }
+    const res = E.play(board, c.stones, move, c.toMove, historySet());
+    if (!res.ok) {
+      setStatus(REFUSED[res.reason], true);
+      return false;
+    }
+    const captures = { ...c.captures };
+    captures[c.toMove] += res.captured.length;
+    record.push({ stones: res.stones, toMove: E.other(c.toMove), captures, lastMove: move, passes: 0 });
+    moves.push(move);
+    const n = res.captured.length;
+    setStatus(n ? `${colourName(c.toMove)} captured ${n} stone${n > 1 ? 's' : ''}.` : '');
+    return true;
+  }
+
+  function schedule() {
+    if (online()) { render(); return; } // the server says when the other player has moved
+    if (scoring || thinking || paused || view !== null || isHumanTurn()) { render(); return; }
+    const gid = gameId, len = record.length, t0 = performance.now();
+    thinking = true;
+    render();
+    requestMove({
+      kind: 'move', side: board.side, stones: Array.from(cur().stones), toMove: cur().toMove,
+      player: { type: 'mcts', playouts: levelOf(cur().toMove) }, komi: cfg.komi, seed: (seed + len * 7919) | 0,
+      history: [...historySet()], passes: cur().passes, placedBefore: placedSoFar(),
+    }).then((res) => {
+      // A reply that comes back at once is hard to follow; give the eye half a second.
+      setTimeout(() => {
+        if (gid !== gameId) return;
+        thinking = false;
+        if (len === record.length && view === null && !scoring && !paused) { pushMove(res.move); save(); }
+        schedule();
+      }, Math.max(0, 500 - (performance.now() - t0)));
+    });
+  }
+
+  // Stones the opponent could capture with one move; cached per position.
+  let dangerKey = null, dangerList = [];
+  function dangerCells(stones) {
+    const key = E.keyOf(stones);
+    if (key === dangerKey) return dangerList;
+    const { groupOf } = E.analyze(board, stones);
+    const hist = historySet();
+    dangerList = [];
+    for (const color of [BLACK, WHITE]) {
+      const risk = E.threatened(board, stones, color, hist);
+      for (let i = 0; i < board.size; i++) if (stones[i] === color && risk.has(groupOf[i])) dangerList.push(i);
+    }
+    dangerKey = key;
+    return dangerList;
+  }
+
+  function render() {
+    const st0 = online() ? net.state : null, resigned = st0 ? st0.resigned : null;
+    const pos = shown(), live = view === null, stones = pos.stones, over = (scoring || !!resigned) && live;
+    const sc = over && scoring ? E.score(board, stones, cfg.komi, deadSet, { prisoners: pos.captures }) : null;
+    const st = { stones, last: pos.lastMove, dead: over ? deadSet : null, territory: sc && sc.territory };
+    if (!scoring && $('dangerChk').checked) st.danger = dangerCells(stones);
+    if (live && !scoring && !resigned && !thinking && isHumanTurn() && hover !== null && stones[hover] === EMPTY) {
+      const res = E.play(board, stones, hover, pos.toMove, historySet());
+      if (res.ok) { st.ghost = { i: hover, color: pos.toMove }; st.crosses = res.captured; } else st.illegal = hover;
+    }
+    bv.draw(st);
+
+    const n = record.length - 1;
+    let turn = `${colourName(pos.toMove)} to play`;
+    if (cfg.opponent === 'cpu' && isHuman(pos.toMove)) turn = `Your move (${colourName(pos.toMove)})`;
+    if (!live) turn = `Looking back at move ${shownIndex()} of ${n}`;
+    else if (scoring || resigned) turn = 'Game over';
+    else if (st0) {
+      const mine = isHuman(pos.toMove), friend = pos.toMove === BLACK ? 'black' : 'white';
+      turn = net.offline ? 'Connection lost. Reconnecting' : mine ? `Your move (${colourName(pos.toMove)})`
+        : !st0.seats[friend] ? 'Waiting for your friend to open the link'
+        : `Your friend's move (${colourName(pos.toMove)})` + (st0.present[friend] ? '' : '. They are away at the moment');
+    }
+    else if (paused) turn = `Paused. ${colourName(pos.toMove)} to play`;
+    else if (thinking) turn = watching() ? `${colourName(pos.toMove)} is thinking` : `${who(pos.toMove)} is thinking`;
+    $('turnText').textContent = turn;
+    $('turnText').classList.toggle('thinking', live && thinking && !scoring && !paused);
+    $('plB').classList.toggle('on', !over && pos.toMove === BLACK);
+    $('plW').classList.toggle('on', !over && pos.toMove === WHITE);
+    $('capB').textContent = pos.captures[BLACK];
+    $('capW').textContent = pos.captures[WHITE];
+    $('scoreBox').hidden = !over;
+    $('playBtns').hidden = over;
+    $('passBtn').hidden = watching();
+    $('undoBtn').hidden = watching() || online();
+    $('pauseBtn').hidden = !watching();
+    $('resignBtn').hidden = !online() || !$('resignAsk').hidden;
+    $('rematchBtn').hidden = online();
+    $('keepBtn').hidden = !!resigned;
+    $('scoreTable').hidden = $('deadNote').hidden = !sc;
+    $('sharePanel').hidden = !online();
+    if (st0) {
+      $('shareLabel').textContent = st0.seats.black && st0.seats.white ? 'Game link' : 'Send this link to your friend';
+      $('passBtn').disabled = !live || !isHumanTurn() || net.offline;
+      if (resigned) $('scoreHead').textContent = `${(resigned === 'black') === (humanColour() === BLACK) ? 'You resigned' : 'Your friend resigned'}. ${resigned === 'black' ? 'White' : 'Black'} wins.`;
+    }
+    $('pauseBtn').textContent = paused ? 'Resume' : 'Pause';
+    if (!st0) $('passBtn').disabled = !live || thinking || !isHumanTurn();
+    $('undoBtn').disabled = !moves.some((m, k) => isHuman(k % 2 === 0 ? BLACK : WHITE));
+    if (sc) {
+      const diff = sc.black - sc.white, b = sc.detail[BLACK], w = sc.detail[WHITE];
+      const winner = diff > 0 ? BLACK : WHITE;
+      $('scoreHead').textContent = diff === 0 ? 'A draw' : cfg.opponent === 'cpu' || online()
+        ? `${isHuman(winner) ? 'You win' : online() ? 'Your friend wins' : 'The computer wins'} by ${Math.abs(diff)}`
+        : `${colourName(winner)} wins by ${Math.abs(diff)}`;
+      const row = (label, x, y) => `<tr><td>${label}</td><td>${x}</td><td>${y}</td></tr>`;
+      $('scoreBody').innerHTML = row('Territory', b.territory, w.territory) + row('Stones captured', b.captures, w.captures) +
+        row('Dead stones taken off', b.dead, w.dead) + row('For moving second', '', cfg.komi || '') + row('Total', sc.black, sc.white);
+    }
+    const s = $('moveSlider');
+    s.max = n; s.value = shownIndex();
+    $('moveLabel').textContent = `Move ${shownIndex()} of ${n}`;
+    $('prevBtn').disabled = shownIndex() === 0;
+    $('nextBtn').disabled = shownIndex() === n;
+  }
+
+  function setStatus(msg, err) { $('status').textContent = msg; $('status').className = 'status' + (err ? ' err' : ''); }
+
+  function onTap(i) {
+    if (view !== null) { setStatus('You are looking at an earlier move. Slide to the end to play.', true); return; }
+    if (online()) {
+      if (net.state.resigned || net.offline) return;
+      if (scoring) { if (cur().stones[i]) netSend({ t: 'toggle', cell: i }); return; }
+      if (!isHumanTurn()) return;
+      // Check here first so a slip gets an answer at once; the server checks again.
+      const res = E.play(board, cur().stones, i, cur().toMove, historySet());
+      if (!res.ok) { setStatus(REFUSED[res.reason], true); render(); return; }
+      netSend({ t: 'move', n: net.state.moves.length, cell: i });
+      return;
+    }
+    if (scoring) return toggleDead(i);
+    if (thinking || !isHumanTurn()) return;
+    if (pushMove(i)) { save(); schedule(); } else render();
+  }
+
+  function pass() {
+    if (view !== null || thinking || scoring || !isHumanTurn()) return;
+    if (online()) { netSend({ t: 'pass', n: net.state.moves.length }); return; }
+    pushMove(PASS);
+    save();
+    schedule();
+  }
+
+  function undo() {
+    if (!moves.length) return;
+    gameId++; // drop any computer move still being worked out
+    thinking = false;
+    // Take back moves until a person is to play again.
+    do { record.pop(); moves.pop(); } while (moves.length && !isHumanTurn());
+    scoring = false; view = null; deadSet = new Set();
+    setStatus('');
+    save();
+    schedule();
+  }
+
+  function toggleDead(i) { flipGroup(i); render(); }
+
+  function setView(k) {
+    k = Math.max(0, Math.min(record.length - 1, k));
+    view = k === record.length - 1 ? null : k;
+    if (view === null) { setStatus(''); schedule(); } else render();
+  }
+
+  $('passBtn').addEventListener('click', pass);
+  $('undoBtn').addEventListener('click', undo);
+  $('pauseBtn').addEventListener('click', () => { paused = !paused; schedule(); });
+  $('dangerChk').addEventListener('change', render);
+  $('moveSlider').addEventListener('input', (e) => setView(+e.target.value));
+  $('prevBtn').addEventListener('click', () => setView(shownIndex() - 1));
+  $('nextBtn').addEventListener('click', () => setView(shownIndex() + 1));
+  $('setupBtn').addEventListener('click', () => showPlay('setup'));
+  $('rematchBtn').addEventListener('click', () => startGame(cfg));
+  $('resignBtn').addEventListener('click', () => { $('resignAsk').hidden = false; render(); });
+  $('resignNo').addEventListener('click', () => { $('resignAsk').hidden = true; render(); });
+  $('resignYes').addEventListener('click', () => { $('resignAsk').hidden = true; netSend({ t: 'resign' }); });
+  $('copyBtn').addEventListener('click', () => {
+    const done = () => { $('copyBtn').textContent = 'Copied'; setTimeout(() => { $('copyBtn').textContent = 'Copy'; }, 1500); };
+    const select = () => { $('shareLink').focus(); $('shareLink').select(); };
+    try { navigator.clipboard.writeText($('shareLink').value).then(done, select); } catch (e) { select(); }
+  });
+  $('keepBtn').addEventListener('click', () => {
+    if (online()) { netSend({ t: 'resume' }); return; }
+    // Carry on from the final position: the two passes no longer end the game.
+    scoring = false; deadSet = new Set(); cur().passes = 0; setStatus(''); schedule();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (current !== 'play' || $('playGame').hidden || e.target.matches('input, select, button')) return;
+    if (e.key === 'ArrowLeft') setView(shownIndex() - 1);
+    if (e.key === 'ArrowRight') setView(shownIndex() + 1);
+  });
+
+  // ---------- Play: online ----------
+  // The game lives on a small server (see ../online). A browser keeps a secret for each game,
+  // which is what gives it its seat back when the link is opened again.
+  const ONLINE = window.HEXGO_ONLINE || null; // the server's address; only the public site has one
+  const RESUME = -2; // an entry in the server's move list: play was resumed after two passes
+  let net = null; // { id, secret, ws, state, offline, tries, timer, ping }
+
+  function randomSecret() {
+    const b = crypto.getRandomValues(new Uint8Array(24));
+    return Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
+  }
+
+  function closeNet() {
+    if (!net) return;
+    const n = net;
+    net = null;
+    clearTimeout(n.timer); clearInterval(n.ping);
+    if (n.ws) { n.ws.onclose = null; try { n.ws.close(); } catch (e) { /* already closed */ } }
+    if (online()) { cfg = null; board = null; } // the board on screen belonged to that game
+  }
+
+  async function createOnline(c) {
+    $('startBtn').disabled = true;
+    $('setupError').textContent = '';
+    const secret = randomSecret();
+    try {
+      const r = await fetch(ONLINE + '/games', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ side: c.side, komi: c.komi, colour: c.human, secret }) });
+      const body = await r.json();
+      if (r.status === 429) { $('setupError').textContent = 'Too many new games from your connection. Try again later.'; $('startBtn').disabled = false; return; }
+      if (!r.ok) throw new Error(body.error || 'The server refused.');
+      store.set('hexgo.online.' + body.id, secret);
+      openOnline(body.id);
+    } catch (e) {
+      $('setupError').textContent = 'Could not create the game. Check your connection and try again.';
+    }
+    $('startBtn').disabled = false;
+  }
+
+  function openOnline(id) {
+    closeNet();
+    if (!ONLINE) { waitMessage('Online games only work on the public HexGo site.'); return; }
+    let secret = store.get('hexgo.online.' + id);
+    if (typeof secret !== 'string') { secret = randomSecret(); store.set('hexgo.online.' + id, secret); }
+    net = { id, secret, ws: null, state: null, offline: true, tries: 0, timer: null, ping: null };
+    waitMessage('Connecting to the game.');
+    connect();
+  }
+
+  function waitMessage(text) { $('waitText').textContent = text; showPlay('wait'); }
+
+  function connect() {
+    const n = net;
+    const ws = n.ws = new WebSocket(ONLINE.replace(/^http/, 'ws') + '/games/' + n.id + '/ws');
+    ws.onopen = () => { n.tries = 0; ws.send(JSON.stringify({ t: 'join', secret: n.secret })); };
+    ws.onmessage = (e) => {
+      if (n !== net || e.data === 'pong') return;
+      const m = JSON.parse(e.data);
+      if (m.t === 'state') { n.offline = false; onlineState(m); }
+      else if (m.t === 'error') { setStatus(m.message, true); }
+      else if (m.t === 'full') { closeNet(); waitMessage('This game already has two players. If you are one of them, open the link in the browser you used before.'); }
+      else if (m.t === 'gone') { closeNet(); waitMessage('This game no longer exists. Games are removed after 2 days without a move.'); }
+    };
+    ws.onclose = () => {
+      if (n !== net) return;
+      n.offline = true;
+      if (n.state) render(); else waitMessage('Connecting to the game.');
+      n.timer = setTimeout(connect, Math.min(15000, 1000 * 2 ** n.tries++));
+    };
+    clearInterval(n.ping);
+    n.ping = setInterval(() => { if (ws.readyState === 1) ws.send('ping'); }, 30000);
+  }
+
+  function netSend(msg) {
+    if (net && net.ws && net.ws.readyState === 1) net.ws.send(JSON.stringify(msg));
+    else setStatus('Not connected. Your move was not sent.', true);
+  }
+
+  // Rebuilds the game from the server's move list. It is short, so replaying all of it each
+  // time is simpler than patching, and both players are certain to see the same board.
+  function onlineState(s) {
+    const first = !net.state;
+    const grew = first || s.moves.length !== net.state.moves.length;
+    net.state = s;
+    if (first || !cfg || !online() || cfg.id !== s.id) {
+      gameId++;
+      cfg = { opponent: 'online', id: s.id, side: s.side, komi: s.komi, human: s.you };
+      bv = boardView($('gameBoard'), cfg.side, onTap, (i, left) => {
+        if (i === null && hover !== left) return;
+        hover = i; render();
+      });
+      board = bv.board;
+      hover = null; view = null; thinking = false; paused = false; dangerKey = null;
+      $('whoB').textContent = who(BLACK);
+      $('whoW').textContent = who(WHITE);
+      $('gameNote').textContent = `${cfg.side} per side, ${board.size} cells. ` + (cfg.komi ? `White starts with ${cfg.komi} points.` : 'No extra points for White.');
+      $('shareLink').value = location.href.split('#')[0] + '#g-' + s.id;
+      $('resignAsk').hidden = true;
+      showPlay('game');
+    }
+    record = [{ stones: new Uint8Array(board.size), toMove: BLACK, captures: { [BLACK]: 0, [WHITE]: 0 }, lastMove: null, passes: 0 }];
+    moves = []; scoring = false; deadSet = new Set();
+    setStatus('');
+    for (const m of s.moves) {
+      if (m === RESUME) { scoring = false; deadSet = new Set(); cur().passes = 0; setStatus(''); } else pushMove(m);
+    }
+    if (scoring) for (const c of s.toggles) flipGroup(c);
+    if (grew) view = null;
+    render();
+  }
+
+  // Flips whether the group on cell `i` counts as dead.
+  function flipGroup(i) {
+    const stones = cur().stones;
+    if (!stones[i]) return;
+    const { groups, groupOf } = E.analyze(board, stones);
+    const on = !deadSet.has(i);
+    for (const c of groups[groupOf[i]].cells) { if (on) deadSet.add(c); else deadSet.delete(c); }
+  }
+
+  if (ONLINE) { $('mode-online').disabled = false; $('onlineTag').hidden = true; }
+
+  // ---------- Start ----------
+  const validCfg = (c) => c && ['cpu', 'person', 'watch'].includes(c.opponent) && (c.opponent !== 'watch' || (LEVELS[c.black] && LEVELS[c.white])) && LEVELS[c.level] && ['black', 'white'].includes(c.human) &&
+    SIZES[c.side] && typeof c.komi === 'number';
+  const savedSetup = store.get('hexgo.setup');
+  if (validCfg(savedSetup)) {
+    setRadio('opp', savedSetup.opponent); setRadio('level', savedSetup.level); setRadio('colour', savedSetup.human);
+    setRadio('side', savedSetup.side); $('komiSel').value = String(savedSetup.komi);
+    if (!$('komiSel').value) $('komiSel').value = String(KOMI); // an older choice that is no longer offered
+    if (LEVELS[savedSetup.black]) $('watchB').value = String(savedSetup.black);
+    if (LEVELS[savedSetup.white]) $('watchW').value = String(savedSetup.white);
+  }
+  syncSetup();
+  const savedGame = store.get('hexgo.game');
+  if (savedGame && validCfg(savedGame.cfg) && Array.isArray(savedGame.moves) && savedGame.moves.length) {
+    try { startGame(savedGame.cfg, savedGame.moves); } catch (e) { board = null; store.del('hexgo.game'); }
+  }
+  showPlay(board ? 'game' : 'setup');
+  const startAt = location.hash.slice(1);
+  if (GAME_LINK.test(startAt)) { show('play'); openOnline(startAt.slice(2)); } else show(startAt || 'home');
+})();
+</script>

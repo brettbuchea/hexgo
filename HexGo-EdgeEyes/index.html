@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HexGo</title>
+<style>
+  :root {
+    --bg: #f4efe6; --panel: #fffaf2; --ink: #2b2620; --muted: #7a6f60; --line: #d9cdb8;
+    --wood: #e2c48f; --wood-edge: #b9965e; --cell-line: #9c7c48; --terr-b: #8f7a55; --terr-w: #f1dfb8;
+    --black: #1d1b19; --white: #fbfaf7; --stone-edge: #6b6157; --accent: #c2410c; --danger: #dc2626;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1b1916; --panel: #25221e; --ink: #ede6da; --muted: #a59a89; --line: #3a352e;
+      --wood: #b8975e; --wood-edge: #8a6d3e; --cell-line: #6e5530; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --bg: #1b1916; --panel: #25221e; --ink: #ede6da; --muted: #a59a89; --line: #3a352e;
+    --wood: #b8975e; --wood-edge: #8a6d3e; --cell-line: #6e5530; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  .app { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; max-width: 1240px;
+         margin: 0 auto; padding: 20px 16px; }
+  @media (max-width: 880px) { .app { grid-template-columns: 1fr; } }
+  main, aside { min-width: 0; }
+  h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: .3px; }
+  h3 { margin: 0 0 8px; font-size: 14px; }
+  .sub { color: var(--muted); margin: 0 0 14px; font-size: 13px; }
+  .board-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+  svg { display: block; width: 100%; height: auto; max-height: calc(100vh - 150px); touch-action: manipulation; }
+  .cell { fill: var(--wood); stroke: var(--cell-line); stroke-width: 1; cursor: pointer; }
+  .cell.terr-1 { fill: var(--terr-b); } .cell.terr-2 { fill: var(--terr-w); }
+  .stone { pointer-events: none; }
+  .stone.b { fill: var(--black); } .stone.w { fill: var(--white); stroke: var(--stone-edge); stroke-width: 1; }
+  .stone.ghost { opacity: .45; } .stone.dead { opacity: .35; }
+  .mark-last { fill: none; stroke: var(--accent); stroke-width: 2.5; pointer-events: none; }
+  .mark-cap { stroke: var(--danger); stroke-width: 3; stroke-linecap: round; pointer-events: none; }
+  .mark-danger { fill: none; stroke: var(--danger); stroke-width: 2; stroke-dasharray: 4 3; pointer-events: none; }
+  .mark-illegal { fill: var(--danger); opacity: .25; pointer-events: none; }
+  .scrub { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 13px; color: var(--muted);
+           font-variant-numeric: tabular-nums; }
+  .scrub input { flex: 1; min-width: 0; accent-color: var(--accent); }
+  .scrub button { padding: 2px 10px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .panel + .panel { margin-top: 14px; }
+  .turn { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600; }
+  .dot { width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--stone-edge); flex: none; }
+  .dot.b { background: var(--black); } .dot.w { background: var(--white); }
+  .status { min-height: 21px; color: var(--muted); margin-top: 6px; font-size: 13px; }
+  .status.err { color: var(--danger); }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }
+  .stat { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+  .stat .k { font-size: 12px; color: var(--muted); } .stat .v { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  button, select, input[type=number] { font: inherit; color: var(--ink); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+  button { cursor: pointer; } button:hover { border-color: var(--muted); }
+  button:disabled { opacity: .5; cursor: default; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  label.row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 0; font-size: 14px; }
+  label.row select { max-width: 190px; }
+  input[type=number] { width: 80px; }
+  .note { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
+  .rules { font-size: 13px; } .rules p { margin: 6px 0; }
+  .score { font-size: 14px; margin-top: 10px; } .score b { font-size: 16px; }
+  .summary { font-size: 13px; margin: 10px 0 6px; } .summary b { font-variant-numeric: tabular-nums; }
+  .results { max-height: 260px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+  .results table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+  .results th, .results td { padding: 5px 8px; text-align: left; border-bottom: 1px solid var(--line); }
+  .results th { position: sticky; top: 0; background: var(--panel); color: var(--muted); font-weight: 600; }
+  .results td button { padding: 1px 8px; font-size: 12px; }
+  .bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; margin-top: 8px; }
+  .bar > div { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .hidden { display: none !important; }
+  @media (prefers-reduced-motion: reduce) { .bar > div { transition: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <main>
+    <h1>HexGo</h1>
+    <p class="sub">Go on a hexagonal board. A group lives with a liberty pair (two touching empty cells) or two eye liberties.</p>
+    <div class="board-wrap">
+      <svg id="board" role="img" aria-label="HexGo board"></svg>
+      <div class="scrub">
+        <button id="prevBtn" aria-label="Previous move">&#9664;</button>
+        <input type="range" id="moveSlider" min="0" max="0" value="0" aria-label="Move">
+        <button id="nextBtn" aria-label="Next move">&#9654;</button>
+        <span id="moveLabel">Move 0</span>
+      </div>
+    </div>
+  </main>
+  <aside>
+    <div class="panel">
+      <div class="turn"><span id="turnDot" class="dot b"></span><span id="turnText">Black to play</span></div>
+      <div id="status" class="status"></div>
+      <div class="stats">
+        <div class="stat"><div class="k">Black captured</div><div class="v" id="capB">0</div></div>
+        <div class="stat"><div class="k">White captured</div><div class="v" id="capW">0</div></div>
+      </div>
+      <div class="btns" id="playBtns">
+        <button id="passBtn">Pass</button>
+        <button id="undoBtn">Undo</button>
+        <button id="pauseBtn" class="hidden">Pause</button>
+      </div>
+      <div id="scoreBox" class="hidden">
+        <p class="score">Game over. Stones that look dead are already faded; click a group to change that. Score = empty territory + stones captured + dead stones removed.</p>
+        <div class="score" id="scoreText"></div>
+        <div class="btns" style="margin-top:10px"><button id="resumeBtn">Resume play</button></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Players</h3>
+      <label class="row">Black <select id="pBlack"></select></label>
+      <label class="row">White <select id="pWhite"></select></label>
+      <label class="row">Computer move delay
+        <select id="delay"><option value="0">None</option><option value="400" selected>0.4 s</option><option value="1200">1.2 s</option></select></label>
+      <p class="note">Computer players use Monte Carlo tree search: they play out hundreds or thousands of random games from each position and pick the move that scores the most points.</p>
+      <p class="note" id="aiNote"></p>
+    </div>
+    <div class="panel">
+      <h3>Game</h3>
+      <label class="row">Board size
+        <select id="sizeSel"><option value="3">3 per side (19)</option><option value="4">4 per side (37)</option>
+          <option value="5" selected>5 per side (61)</option><option value="6">6 per side (91)</option><option value="7">7 per side (127)</option>
+          <option value="9">9 per side (217)</option><option value="11">11 per side (331)</option></select></label>
+      <label class="row">Komi <input type="number" id="komi" value="6" step="0.5"></label>
+      <label class="row">Show groups in danger <input type="checkbox" id="dangerChk" checked></label>
+      <label class="row">Preview captures on hover <input type="checkbox" id="previewChk" checked></label>
+      <div class="btns"><button class="primary" id="newBtn">New game</button></div>
+    </div>
+    <div class="panel">
+      <h3>Computer vs computer match</h3>
+      <label class="row">Games <input type="number" id="matchGames" value="10" min="1" max="500"></label>
+      <label class="row">Swap colours each game <input type="checkbox" id="matchSwap" checked></label>
+      <p class="note">Plays the Black and White players above against each other at the current board size and komi, without drawing each move.</p>
+      <div class="btns" style="margin-top:10px"><button class="primary" id="matchBtn">Run match</button><button id="stopBtn" disabled>Stop</button></div>
+      <div class="bar"><div id="matchBar"></div></div>
+      <div id="matchSummary" class="summary"></div>
+      <div class="results hidden" id="resultsWrap">
+        <table><thead><tr><th>#</th><th>Black</th><th>White</th><th>Result</th><th>Moves</th><th></th></tr></thead>
+          <tbody id="resultsBody"></tbody></table>
+      </div>
+    </div>
+    <div class="panel rules">
+      <h3>Rules in brief</h3>
+      <p><b>Liberty pair:</b> two empty cells that touch each other and both touch the group. A lone stone with enemies on every other side is captured.</p>
+      <p><b>Edges:</b> walking round an edge stone, skip the off-board cells; the cells either side of the gap count as next to each other, so liberties left and right along the edge make a pair.</p>
+      <p><b>Eyes:</b> empty cells the group fully rings with its own stones. An area that touches the board edge is never an eye (it still counts as territory). Two or more eye cells anywhere keep it alive; exactly two is "atari".</p>
+      <p><b>Order:</b> the opponent's dead groups are removed first, so filling a two-point eye captures even though the stone looks like suicide. Pure suicide and repeated positions are illegal.</p>
+      <p>Dashed red ring = group the opponent can capture in one move.</p>
+    </div>
+  </aside>
+</div>
+<script src="engine.js"></script>
+<script src="ai.js"></script>
+<script>
+(() => {
+  const E = window.HexGoEngine;
+  const AI = window.hexGoAIModule(E);
+  const { EMPTY, BLACK, WHITE } = E;
+  const PASS = AI.PASS;
+  const svg = document.getElementById('board');
+  const NS = 'http://www.w3.org/2000/svg';
+  const R = 24; // hex circumradius in SVG units
+  const $ = (id) => document.getElementById(id);
+  const colorName = (c) => (c === BLACK ? 'Black' : 'White');
+  // The AI's expected final margin includes komi; show the lead on the board instead,
+  // since HexGo's komi isn't settled yet.
+  const boardLead = (mover, margin, komi) => margin + (mover === BLACK ? komi : -komi);
+  const leadText = (x) => Math.abs(x) < 0.5 ? 'an even board' : `${Math.abs(x).toFixed(0)} point${Math.abs(x) >= 1.5 ? 's' : ''} ${x > 0 ? 'ahead' : 'behind'} on the board`;
+
+  const PLAYERS = [
+    ['human', 'Person'],
+    ['random', 'Random mover'],
+    ['mcts:200', 'Easy AI (200 sims)'],
+    ['mcts:1000', 'Medium AI (1,000 sims)'],
+    ['mcts:4000', 'Hard AI (4,000 sims)'],
+  ];
+  for (const id of ['pBlack', 'pWhite']) {
+    $(id).innerHTML = PLAYERS.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+  }
+  $('pWhite').value = 'mcts:1000';
+  const parsePlayer = (v) => v === 'random' ? { type: 'random' } : v === 'human' ? null : { type: 'mcts', playouts: +v.split(':')[1] };
+  const playerLabel = (v) => PLAYERS.find((p) => p[0] === v)[1];
+
+  // ---------- Computer move requests (Web Worker when possible, else main thread) ----------
+  const workerSrc = `const E=(${window.hexGoEngineModule})();const AI=(${window.hexGoAIModule})(E);
+    onmessage=(e)=>{const m=e.data;
+      if(m.kind==='ping'){postMessage({kind:'pong'});return;}
+      if(m.kind==='move'){const b=E.createBoard(m.side);
+        const r=AI.chooseMove(b,Uint8Array.from(m.stones),m.toMove,m.player,{komi:m.komi,seed:m.seed,history:new Set(m.history),passes:m.passes,placedBefore:m.placedBefore});
+        postMessage({kind:'move',id:m.id,move:r.move,winRate:r.winRate,expectedMargin:r.expectedMargin});return;}
+      if(m.kind==='match'){for(let g=0;g<m.games;g++){const swap=m.swap&&g%2===1;
+        const res=AI.playGame(m.side,swap?m.white:m.black,swap?m.black:m.white,{komi:m.komi,seed:m.seed+g});
+        postMessage({kind:'game',index:g,swap,moves:res.moves,winner:res.winner,margin:res.margin});}
+        postMessage({kind:'done'});}};`;
+  const workerUrl = URL.createObjectURL(new Blob([workerSrc], { type: 'text/javascript' }));
+  function makeWorker() { try { return new Worker(workerUrl); } catch (e) { return null; } }
+
+  let moveWorker = makeWorker();
+  const pendingMoves = new Map();
+  let reqId = 0;
+  const workerReady = new Promise((resolve) => {
+    if (!moveWorker) return resolve(false);
+    const timer = setTimeout(() => resolve(false), 1500);
+    moveWorker.onerror = () => { clearTimeout(timer); resolve(false); };
+    moveWorker.onmessage = (e) => {
+      if (e.data.kind === 'pong') { clearTimeout(timer); resolve(true); return; }
+      const cb = pendingMoves.get(e.data.id);
+      if (cb) { pendingMoves.delete(e.data.id); cb(e.data); }
+    };
+    moveWorker.postMessage({ kind: 'ping' });
+  });
+
+  async function requestMove(msg) {
+    const useWorker = await workerReady;
+    if (useWorker) {
+      return new Promise((resolve) => { const id = ++reqId; pendingMoves.set(id, resolve); moveWorker.postMessage({ ...msg, id }); });
+    }
+    await new Promise((r) => setTimeout(r, 20)); // let the page paint "thinking" first
+    const b = E.createBoard(msg.side);
+    return AI.chooseMove(b, Uint8Array.from(msg.stones), msg.toMove, msg.player,
+      { komi: msg.komi, seed: msg.seed, history: new Set(msg.history), passes: msg.passes, placedBefore: msg.placedBefore });
+  }
+
+  // ---------- Game state ----------
+  // record[k] is the position after k moves: { stones, toMove, captures, lastMove, passes }.
+  let board, record, view, scoring, deadSet, hover, paused, thinking, gameId = 0, komi;
+
+  const cur = () => record[record.length - 1];
+  const shownIndex = () => (view === null ? record.length - 1 : view);
+  const shown = () => record[shownIndex()];
+  const historySet = () => new Set(record.map((r) => E.keyOf(r.stones)));
+  // Stones Black has placed minus stones White has placed (the AI needs it for territory scoring).
+  const placedSoFar = () => record.reduce((d, r, k) => d + (k && r.lastMove !== null ? (record[k - 1].toMove === BLACK ? 1 : -1) : 0), 0);
+  const playerFor = (color) => $(color === BLACK ? 'pBlack' : 'pWhite').value;
+  const isHumanTurn = () => playerFor(cur().toMove) === 'human';
+  const anyComputer = () => playerFor(BLACK) !== 'human' || playerFor(WHITE) !== 'human';
+
+  function newGame(startPaused) {
+    gameId++;
+    board = E.createBoard(+$('sizeSel').value);
+    komi = +$('komi').value;
+    record = [{ stones: new Uint8Array(board.size), toMove: BLACK, captures: { [BLACK]: 0, [WHITE]: 0 }, lastMove: null, passes: 0 }];
+    view = null; scoring = false; deadSet = new Set(); hover = null; paused = !!startPaused; thinking = false; dangerKey = null;
+    $('aiNote').textContent = '';
+    buildSvg();
+    setStatus('');
+    render();
+    schedule();
+  }
+
+  function pushMove(move) {
+    const c = cur();
+    if (move === PASS) {
+      record.push({ stones: c.stones, toMove: E.other(c.toMove), captures: { ...c.captures }, lastMove: null, passes: c.passes + 1 });
+      setStatus(`${colorName(c.toMove)} passed.`);
+      if (c.passes + 1 >= 2) { scoring = true; deadSet = AI.estimateDead(board, c.stones); setStatus(''); }
+      return true;
+    }
+    const res = E.play(board, c.stones, move, c.toMove, historySet());
+    if (!res.ok) {
+      setStatus({ occupied: 'That cell is taken.', suicide: 'Illegal: that stone would be captured (suicide).',
+                  ko: 'Illegal: repeats an earlier position (ko).' }[res.reason], true);
+      return false;
+    }
+    const captures = { ...c.captures };
+    captures[c.toMove] += res.captured.length;
+    record.push({ stones: res.stones, toMove: E.other(c.toMove), captures, lastMove: move, passes: 0 });
+    const n = res.captured.length;
+    setStatus(n ? `${colorName(c.toMove)} captured ${n} stone${n > 1 ? 's' : ''}.` : '');
+    return true;
+  }
+
+  // ---------- Computer turns ----------
+  function schedule() {
+    $('pauseBtn').classList.toggle('hidden', !anyComputer() || scoring);
+    $('pauseBtn').textContent = paused ? 'Resume' : 'Pause';
+    if (scoring || paused || thinking || view !== null || isHumanTurn()) { render(); return; }
+    const player = parsePlayer(playerFor(cur().toMove));
+    const gid = gameId, len = record.length, mover = cur().toMove;
+    const t0 = performance.now();
+    thinking = true;
+    render();
+    requestMove({
+      kind: 'move', side: board.side, stones: Array.from(cur().stones), toMove: mover, player, komi,
+      seed: (gid * 1000 + len) | 0, history: [...historySet()], passes: cur().passes, placedBefore: placedSoFar(),
+    }).then((res) => {
+      const wait = Math.max(0, +$('delay').value - (performance.now() - t0));
+      setTimeout(() => {
+        thinking = false;
+        if (gid !== gameId || len !== record.length || paused || view !== null) { schedule(); return; }
+        pushMove(res.move);
+        if (res.expectedMargin !== undefined) {
+          $('aiNote').textContent = `${colorName(mover)} expects to finish ${leadText(boardLead(mover, res.expectedMargin, komi))}.`;
+        }
+        schedule();
+      }, wait);
+    });
+  }
+
+  // ---------- Drawing ----------
+  const centre = ([q, r]) => [R * Math.sqrt(3) * (q + r / 2), R * 1.5 * r];
+  const hexPoints = (cx, cy, rad) => Array.from({ length: 6 }, (_, k) => {
+    const a = Math.PI / 180 * (60 * k - 30);
+    return (cx + rad * Math.cos(a)).toFixed(2) + ',' + (cy + rad * Math.sin(a)).toFixed(2);
+  }).join(' ');
+
+  let cellEls = [], layer;
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    (parent || svg).appendChild(e);
+    return e;
+  }
+  function buildSvg() {
+    svg.innerHTML = '';
+    const side = board.side, pad = R * 1.4;
+    const w = R * Math.sqrt(3) * (2 * side - 1) + pad * 2, h = R * 1.5 * (2 * side - 2) + 2 * R + pad * 2;
+    svg.setAttribute('viewBox', `${-w / 2} ${-h / 2} ${w} ${h}`);
+    const rad = R * Math.sqrt(3) * (side - 0.5) + R * 0.6;
+    el('polygon', { points: Array.from({ length: 6 }, (_, k) => {
+      const a = Math.PI / 3 * k;
+      return (rad * Math.cos(a)).toFixed(2) + ',' + (rad * Math.sin(a)).toFixed(2);
+    }).join(' '), fill: 'var(--wood-edge)' });
+    cellEls = board.cells.map((c, i) => {
+      const [x, y] = centre(c);
+      const p = el('polygon', { points: hexPoints(x, y, R), class: 'cell' });
+      p.addEventListener('click', () => onClick(i));
+      p.addEventListener('mouseenter', () => { hover = i; render(); });
+      p.addEventListener('mouseleave', () => { if (hover === i) { hover = null; render(); } });
+      return p;
+    });
+    layer = el('g', {});
+  }
+
+  function stoneEl(i, color, cls) {
+    const [x, y] = centre(board.cells[i]);
+    el('circle', { cx: x, cy: y, r: R * 0.78, class: 'stone ' + (color === BLACK ? 'b' : 'w') + (cls ? ' ' + cls : '') }, layer);
+  }
+
+  // Stones the opponent could capture with one move; cached per position.
+  let dangerKey = null, dangerList = [];
+  function dangerCells(stones) {
+    const key = E.keyOf(stones);
+    if (key === dangerKey) return dangerList;
+    const { groupOf } = E.analyze(board, stones);
+    const hist = historySet();
+    dangerList = [];
+    for (const color of [BLACK, WHITE]) {
+      const risk = E.threatened(board, stones, color, hist);
+      for (let i = 0; i < board.size; i++) if (stones[i] === color && risk.has(groupOf[i])) dangerList.push(i);
+    }
+    dangerKey = key;
+    return dangerList;
+  }
+
+  function render() {
+    const pos = shown(), live = view === null;
+    const stones = pos.stones;
+    layer.innerHTML = '';
+    const sc = scoring && live ? E.score(board, stones, komi, deadSet, { prisoners: pos.captures }) : null;
+    cellEls.forEach((p, i) => p.setAttribute('class', 'cell' + (sc && sc.territory[i] ? ' terr-' + sc.territory[i] : '')));
+    for (let i = 0; i < board.size; i++) if (stones[i]) stoneEl(i, stones[i], live && deadSet.has(i) ? 'dead' : '');
+    if (pos.lastMove !== null && stones[pos.lastMove]) {
+      const [x, y] = centre(board.cells[pos.lastMove]);
+      el('circle', { cx: x, cy: y, r: R * 0.3, class: 'mark-last' }, layer);
+    }
+    if (!scoring && $('dangerChk').checked) {
+      for (const i of dangerCells(stones)) {
+        const [x, y] = centre(board.cells[i]);
+        el('circle', { cx: x, cy: y, r: R * 0.9, class: 'mark-danger' }, layer);
+      }
+    }
+    if (live && !scoring && !thinking && isHumanTurn() && hover !== null && stones[hover] === EMPTY) {
+      const res = E.play(board, stones, hover, pos.toMove, historySet());
+      if (res.ok) {
+        stoneEl(hover, pos.toMove, 'ghost');
+        if ($('previewChk').checked) for (const c of res.captured) {
+          const [x, y] = centre(board.cells[c]), d = R * 0.35;
+          el('line', { x1: x - d, y1: y - d, x2: x + d, y2: y + d, class: 'mark-cap' }, layer);
+          el('line', { x1: x - d, y1: y + d, x2: x + d, y2: y - d, class: 'mark-cap' }, layer);
+        }
+      } else {
+        const [x, y] = centre(board.cells[hover]);
+        el('polygon', { points: hexPoints(x, y, R * 0.92), class: 'mark-illegal' }, layer);
+      }
+    }
+    // Side panel
+    $('turnDot').className = 'dot ' + (pos.toMove === BLACK ? 'b' : 'w');
+    let turn = `${colorName(pos.toMove)} to play`;
+    if (!live) turn = `Viewing move ${shownIndex()} of ${record.length - 1}`;
+    else if (scoring) turn = 'Game over';
+    else if (thinking) turn = `${colorName(pos.toMove)} is thinking…`;
+    else if (paused && !isHumanTurn()) turn = `${colorName(pos.toMove)} to play (paused)`;
+    $('turnText').textContent = turn;
+    $('capB').textContent = pos.captures[BLACK];
+    $('capW').textContent = pos.captures[WHITE];
+    $('scoreBox').classList.toggle('hidden', !(scoring && live));
+    $('playBtns').classList.toggle('hidden', scoring && live);
+    $('passBtn').disabled = !live || !isHumanTurn() || thinking;
+    if (sc) {
+      const diff = sc.black - sc.white;
+      const part = (c) => { const d = sc.detail[c]; return `${d.territory} territory + ${d.captures} captured + ${d.dead} dead`; };
+      $('scoreText').innerHTML = `Black <b>${sc.black}</b>: ${part(BLACK)}<br>White <b>${sc.white}</b>: ${part(WHITE)} + ${komi} komi<br>` +
+        (diff === 0 ? 'Draw' : `<b>${diff > 0 ? 'Black' : 'White'} wins by ${Math.abs(diff)}</b>`);
+    }
+    // Move slider
+    const s = $('moveSlider');
+    s.max = record.length - 1;
+    s.value = shownIndex();
+    $('moveLabel').textContent = `Move ${shownIndex()} / ${record.length - 1}`;
+  }
+
+  function setStatus(msg, err) { $('status').textContent = msg; $('status').className = 'status' + (err ? ' err' : ''); }
+
+  function onClick(i) {
+    if (view !== null) { setStatus('Viewing an earlier move. Move the slider to the end to play.', true); return; }
+    if (scoring) return toggleDead(i);
+    if (thinking || !isHumanTurn()) return;
+    if (pushMove(i)) schedule(); else render();
+  }
+
+  function pass() {
+    if (view !== null || thinking || !isHumanTurn()) return;
+    pushMove(PASS);
+    schedule();
+  }
+
+  function undo() {
+    if (record.length < 2) return;
+    gameId++; // drop any computer move in flight
+    thinking = false;
+    record.pop();
+    // Against a computer, step back to the person's turn.
+    const mixed = anyComputer() && (playerFor(BLACK) === 'human' || playerFor(WHITE) === 'human');
+    while (mixed && record.length > 1 && !isHumanTurn()) record.pop();
+    if (!isHumanTurn()) paused = true;
+    scoring = false; view = null; deadSet = new Set();
+    setStatus('');
+    schedule();
+  }
+
+  function toggleDead(i) {
+    const stones = cur().stones;
+    if (!stones[i]) return;
+    const { groups, groupOf } = E.analyze(board, stones);
+    const on = !deadSet.has(i);
+    for (const c of groups[groupOf[i]].cells) on ? deadSet.add(c) : deadSet.delete(c);
+    render();
+  }
+
+  function setView(k) {
+    k = Math.max(0, Math.min(record.length - 1, k));
+    view = k === record.length - 1 ? null : k;
+    if (view === null) schedule(); else render();
+  }
+
+  // ---------- Matches ----------
+  let matchWorker = null, matchRun = 0;
+  function runMatch() {
+    const bv = $('pBlack').value, wv = $('pWhite').value;
+    if (bv === 'human' || wv === 'human') {
+      $('matchSummary').textContent = 'Set both Black and White to a computer player first.';
+      return;
+    }
+    stopMatch();
+    const run = ++matchRun;
+    const games = Math.max(1, Math.min(500, +$('matchGames').value || 1));
+    const cfg = { side: +$('sizeSel').value, komi: +$('komi').value, swap: $('matchSwap').checked };
+    const A = { v: bv, p: parsePlayer(bv) }, B = { v: wv, p: parsePlayer(wv) };
+    const results = [];
+    $('resultsBody').innerHTML = '';
+    $('resultsWrap').classList.remove('hidden');
+    $('matchBtn').disabled = true; $('stopBtn').disabled = false;
+    const onGame = (g) => {
+      if (run !== matchRun) return;
+      results.push(g);
+      const blackV = g.swap ? B.v : A.v, whiteV = g.swap ? A.v : B.v;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${g.index + 1}</td><td>${playerLabel(blackV)}</td><td>${playerLabel(whiteV)}</td>` +
+        `<td>${g.winner === null ? 'Draw' : (g.winner === BLACK ? 'B' : 'W') + '+' + Math.abs(g.margin)}</td><td>${g.moves.length}</td><td><button>View</button></td>`;
+      tr.querySelector('button').onclick = () => loadGame(cfg, g.moves, blackV, whiteV);
+      $('resultsBody').appendChild(tr);
+      const draws = results.filter((r) => r.winner === null).length;
+      const aWins = results.filter((r) => r.winner !== null && (r.winner === BLACK) !== !!r.swap).length;
+      const blackWins = results.filter((r) => r.winner === BLACK).length;
+      const avg = results.reduce((s, r) => s + r.margin, 0) / results.length + cfg.komi;
+      $('matchSummary').innerHTML = `${results.length} of ${games} games &middot; board ${cfg.side}, komi ${cfg.komi}<br>` +
+        `<b>${playerLabel(A.v)}</b> (chosen for Black) won <b>${aWins}</b>; <b>${playerLabel(B.v)}</b> won <b>${results.length - aWins - draws}</b>${draws ? `; ${draws} drawn` : ''}.<br>` +
+        `Black won ${blackWins} of ${results.length}. Average Black lead before komi: ${avg.toFixed(1)}.`;
+      $('matchBar').style.width = (100 * results.length / games) + '%';
+    };
+    const onDone = () => { if (run === matchRun) { $('matchBtn').disabled = false; $('stopBtn').disabled = true; } };
+    $('matchBar').style.width = '0';
+    $('matchSummary').textContent = 'Playing…';
+    const msg = { kind: 'match', games, side: cfg.side, komi: cfg.komi, swap: cfg.swap, black: A.p, white: B.p, seed: Date.now() % 100000 };
+    workerReady.then((ok) => {
+      if (run !== matchRun) return;
+      matchWorker = ok ? makeWorker() : null;
+      if (matchWorker) {
+        matchWorker.onmessage = (e) => e.data.kind === 'game' ? onGame(e.data) : onDone();
+        matchWorker.postMessage(msg);
+      } else {
+        // No worker: play one game per tick on the main thread.
+        let g = 0;
+        const step = () => {
+          if (run !== matchRun) return;
+          if (g >= games) return onDone();
+          const swap = cfg.swap && g % 2 === 1;
+          const res = AI.playGame(cfg.side, swap ? B.p : A.p, swap ? A.p : B.p, { komi: cfg.komi, seed: msg.seed + g });
+          onGame({ index: g, swap, moves: res.moves, winner: res.winner, margin: res.margin });
+          g++; setTimeout(step, 10);
+        };
+        setTimeout(step, 10);
+      }
+    });
+  }
+  function stopMatch() {
+    matchRun++;
+    if (matchWorker) { matchWorker.terminate(); matchWorker = null; }
+    $('matchBtn').disabled = false; $('stopBtn').disabled = true;
+  }
+
+  // Load a finished game for viewing; computer play stays paused.
+  function loadGame(cfg, moves, blackV, whiteV) {
+    $('sizeSel').value = cfg.side; $('komi').value = cfg.komi;
+    $('pBlack').value = blackV; $('pWhite').value = whiteV;
+    newGame(true);
+    for (const m of moves) pushMove(m);
+    setStatus('');
+    view = 0;
+    schedule();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  $('passBtn').onclick = pass;
+  $('undoBtn').onclick = undo;
+  $('pauseBtn').onclick = () => { paused = !paused; schedule(); };
+  $('newBtn').onclick = () => newGame();
+  $('resumeBtn').onclick = () => { scoring = false; deadSet = new Set(); cur().passes = 0; setStatus(''); schedule(); };
+  $('komi').oninput = () => { komi = +$('komi').value; render(); };
+  $('dangerChk').onchange = render;
+  $('previewChk').onchange = render;
+  $('pBlack').onchange = $('pWhite').onchange = () => schedule();
+  $('moveSlider').oninput = (e) => setView(+e.target.value);
+  $('prevBtn').onclick = () => setView(shownIndex() - 1);
+  $('nextBtn').onclick = () => setView(shownIndex() + 1);
+  $('matchBtn').onclick = runMatch;
+  $('stopBtn').onclick = () => { stopMatch(); $('matchSummary').insertAdjacentText('beforeend', ' Stopped.'); };
+  document.addEventListener('keydown', (e) => {
+    if (e.target.matches('input, select')) return;
+    if (e.key === 'ArrowLeft') setView(shownIndex() - 1);
+    if (e.key === 'ArrowRight') setView(shownIndex() + 1);
+  });
+  newGame();
+})();
+</script>
+</body>
+</html>

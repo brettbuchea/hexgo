@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HexGo Arena</title>
+<style>
+  /* Layout: board with a turn scrubber on the left; setup, score and move log on the right. */
+  :root {
+    --bg: #f4efe6; --panel: #fffaf2; --ink: #2b2620; --muted: #7a6f60; --line: #d9cdb8;
+    --wood: #e2c48f; --wood-edge: #b9965e; --cell-line: #9c7c48;
+    --black: #1d1b19; --white: #fbfaf7; --stone-edge: #6b6157; --accent: #c2410c; --danger: #dc2626;
+    --row-hi: #f3e3c7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #1b1916; --panel: #25221e; --ink: #ede6da; --muted: #a59a89; --line: #3a352e;
+      --wood: #b8975e; --wood-edge: #8a6d3e; --cell-line: #6e5530; --row-hi: #3b3226; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --bg: #1b1916; --panel: #25221e; --ink: #ede6da; --muted: #a59a89; --line: #3a352e;
+    --wood: #b8975e; --wood-edge: #8a6d3e; --cell-line: #6e5530; --row-hi: #3b3226; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  .app { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; max-width: 1240px;
+         margin: 0 auto; padding: 20px 16px; }
+  @media (max-width: 880px) { .app { grid-template-columns: 1fr; } }
+  main, aside { min-width: 0; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h3 { margin: 0 0 8px; font-size: 14px; }
+  .sub { color: var(--muted); margin: 0 0 14px; font-size: 13px; }
+  .board-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px; }
+  svg { display: block; width: 100%; height: auto; max-height: calc(100vh - 190px); }
+  .cell { fill: var(--wood); stroke: var(--cell-line); stroke-width: 1; }
+  .stone.b { fill: var(--black); } .stone.w { fill: var(--white); stroke: var(--stone-edge); stroke-width: 1; }
+  .mark-last { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+  .mark-cap { stroke: var(--danger); stroke-width: 3; stroke-linecap: round; }
+  .turnline { display: flex; align-items: center; gap: 10px; margin: 12px 2px 4px; font-size: 14px; min-height: 22px; }
+  .turnline .what { flex: 1; min-width: 0; }
+  .turnline .cap { color: var(--danger); font-weight: 600; }
+  .scrub { display: flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
+  .scrub input { flex: 1; min-width: 0; accent-color: var(--accent); }
+  .scrub .count { font-size: 13px; color: var(--muted); min-width: 92px; text-align: right; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .panel + .panel { margin-top: 14px; }
+  label.row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 0; font-size: 14px; }
+  label.row select { max-width: 200px; }
+  button, select, input[type=number] { font: inherit; color: var(--ink); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+  button { cursor: pointer; } button:hover:not(:disabled) { border-color: var(--muted); }
+  button:disabled { opacity: .45; cursor: default; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .scrub button { padding: 4px 10px; min-width: 38px; }
+  input[type=number] { width: 80px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--stone-edge); vertical-align: -2px; }
+  .dot.b { background: var(--black); } .dot.w { background: var(--white); }
+  .status { color: var(--muted); font-size: 13px; min-height: 20px; margin-top: 8px; }
+  .result { font-size: 16px; font-weight: 600; margin: 0 0 6px; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+  .stat .k { font-size: 12px; color: var(--muted); }
+  .stat .v { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .stat .s { font-size: 12px; color: var(--muted); }
+  .log { max-height: 340px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+  .log table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+  .log th, .log td { padding: 4px 8px; text-align: left; border-bottom: 1px solid var(--line); }
+  .log th { position: sticky; top: 0; background: var(--panel); color: var(--muted); font-weight: 600; font-size: 12px; }
+  .log tr.move { cursor: pointer; }
+  .log tr.move:hover td { background: var(--row-hi); }
+  .log tr.current td { background: var(--row-hi); font-weight: 600; }
+  .log td.cap { color: var(--danger); font-weight: 600; }
+  .note { font-size: 12px; color: var(--muted); margin: 8px 0 0; }
+  .bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; margin-top: 10px; }
+  .bar > div { height: 100%; width: 0; background: var(--accent); }
+</style>
+</head>
+<body>
+<div class="app">
+  <main>
+    <h1>HexGo Arena</h1>
+    <p class="sub">Pick two computer players and a board, watch them play a full game, then step through it turn by turn.</p>
+    <div class="board-wrap">
+      <svg id="board" role="img" aria-label="HexGo board"></svg>
+      <div class="turnline"><span class="what" id="turnWhat">Choose players and press Play game.</span></div>
+      <div class="scrub">
+        <button id="firstBtn" aria-label="First turn" title="First turn">&#x23EE;</button>
+        <button id="prevBtn" aria-label="Back one turn" title="Back one turn (←)">&#9664;</button>
+        <input type="range" id="slider" min="0" max="0" value="0" aria-label="Turn">
+        <button id="nextBtn" aria-label="Forward one turn" title="Forward one turn (→)">&#9654;</button>
+        <button id="lastBtn" aria-label="Last turn" title="Last turn">&#x23ED;</button>
+        <span class="count" id="count">Turn 0 / 0</span>
+      </div>
+    </div>
+  </main>
+  <aside>
+    <div class="panel">
+      <h3>Match setup</h3>
+      <label class="row"><span><span class="dot b"></span> Black</span><select id="pBlack"></select></label>
+      <label class="row"><span><span class="dot w"></span> White</span><select id="pWhite"></select></label>
+      <label class="row">Board size
+        <select id="sizeSel"><option value="3">3 per side (19)</option><option value="4">4 per side (37)</option>
+          <option value="5" selected>5 per side (61)</option><option value="6">6 per side (91)</option><option value="7">7 per side (127)</option>
+          <option value="9">9 per side (217)</option></select></label>
+      <label class="row">Komi (White's bonus) <input type="number" id="komi" value="6" step="0.5"></label>
+      <div class="btns"><button class="primary" id="playBtn">Play game</button><button id="stopBtn" disabled>Stop</button></div>
+      <div class="bar"><div id="bar"></div></div>
+      <div class="status" id="status"></div>
+      <p class="note">Bigger boards and stronger players take longer: Hard on 7 per side can take several minutes for a whole game.</p>
+    </div>
+    <div class="panel">
+      <p class="result" id="result">No game yet</p>
+      <div class="stats">
+        <div class="stat"><div class="k"><span class="dot b"></span> Black has captured</div><div class="v" id="capB">0</div><div class="s" id="capBTotal"></div></div>
+        <div class="stat"><div class="k"><span class="dot w"></span> White has captured</div><div class="v" id="capW">0</div><div class="s" id="capWTotal"></div></div>
+      </div>
+      <p class="note">Counts are up to the turn shown; the line below each is the game total.</p>
+    </div>
+    <div class="panel">
+      <h3>Moves</h3>
+      <div class="log"><table><thead><tr><th>Turn</th><th>Player</th><th>Cell</th><th>Captured</th></tr></thead>
+        <tbody id="logBody"></tbody></table></div>
+    </div>
+  </aside>
+</div>
+<script src="engine.js"></script>
+<script src="ai.js"></script>
+<script>
+(() => {
+  const E = window.HexGoEngine;
+  const AI = window.hexGoAIModule(E);
+  const { BLACK, WHITE } = E;
+  const PASS = AI.PASS;
+  const $ = (id) => document.getElementById(id);
+  const svg = $('board');
+  const NS = 'http://www.w3.org/2000/svg';
+  const R = 24;
+  const colorName = (c) => (c === BLACK ? 'Black' : 'White');
+  // The AI's expected final margin includes komi; show the lead on the board instead,
+  // since HexGo's komi isn't settled yet.
+  const boardLead = (mover, margin, komi) => margin + (mover === BLACK ? komi : -komi);
+  const leadText = (x) => Math.abs(x) < 0.5 ? 'an even board' : `${Math.abs(x).toFixed(0)} point${Math.abs(x) >= 1.5 ? 's' : ''} ${x > 0 ? 'ahead' : 'behind'} on the board`;
+
+  const PLAYERS = [
+    ['random', 'Random mover'],
+    ['mcts:200', 'Easy AI (200 sims)'],
+    ['mcts:1000', 'Medium AI (1,000 sims)'],
+    ['mcts:4000', 'Hard AI (4,000 sims)'],
+    ['mcts:10000', 'Very hard AI (10,000 sims)'],
+  ];
+  for (const id of ['pBlack', 'pWhite']) $(id).innerHTML = PLAYERS.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+  $('pBlack').value = 'mcts:1000';
+  $('pWhite').value = 'mcts:1000';
+  const parsePlayer = (v) => v === 'random' ? { type: 'random' } : { type: 'mcts', playouts: +v.split(':')[1] };
+  const label = (v) => PLAYERS.find((p) => p[0] === v)[1];
+
+  // The game runs in a Web Worker and streams one move at a time.
+  const workerSrc = `const E=(${window.hexGoEngineModule})();const AI=(${window.hexGoAIModule})(E);
+    let stop=false;
+    onmessage=(e)=>{const m=e.data;
+      if(m.kind==='ping'){postMessage({kind:'pong'});return;}
+      const b=E.createBoard(m.side);let s=new Uint8Array(b.size),c=E.BLACK,passes=0,n=0,placed=0;
+      const hist=new Set([E.keyOf(s)]);const limit=b.size*4;
+      while(passes<2&&n<limit){
+        const r=AI.chooseMove(b,s,c,c===E.BLACK?m.black:m.white,{komi:m.komi,seed:m.seed+n,history:hist,passes,placedBefore:placed});
+        if(r.move===AI.PASS)passes++;else{s=E.play(b,s,r.move,c,hist).stones;hist.add(E.keyOf(s));passes=0;placed+=c===E.BLACK?1:-1;}
+        postMessage({kind:'move',move:r.move,expectedMargin:r.expectedMargin});c=E.other(c);n++;}
+      postMessage({kind:'done',hitLimit:n>=limit&&passes<2});};`;
+  const workerUrl = URL.createObjectURL(new Blob([workerSrc], { type: 'text/javascript' }));
+  function makeWorker() {
+    return new Promise((resolve) => {
+      let w;
+      try { w = new Worker(workerUrl); } catch (e) { return resolve(null); }
+      const t = setTimeout(() => { w.terminate(); resolve(null); }, 1500);
+      w.onerror = () => { clearTimeout(t); resolve(null); };
+      w.onmessage = (e) => { if (e.data.kind === 'pong') { clearTimeout(t); resolve(w); } };
+      w.postMessage({ kind: 'ping' });
+    });
+  }
+
+  // ---------- Game record ----------
+  // frames[k] = position after k turns: { stones, mover, move, captured: [cells], caps: {B, W}, expectedMargin }
+  let board, frames, view, follow, komi, runId = 0, worker = null, players, finished, finalDead = new Set();
+
+  function cellName(i) {
+    if (i === PASS) return 'pass';
+    const [q, r] = board.cells[i], Rr = board.side - 1;
+    const row = r + Rr, col = q - Math.max(-Rr, -Rr - r);
+    return String.fromCharCode(65 + row) + (col + 1);
+  }
+
+  function reset(side) {
+    board = E.createBoard(side);
+    frames = [{ stones: new Uint8Array(board.size), mover: null, move: null, captured: [], caps: { [BLACK]: 0, [WHITE]: 0 }, expectedMargin: undefined }];
+    view = 0; follow = true; finished = false; finalDead = new Set();
+    $('logBody').innerHTML = '';
+    buildSvg();
+  }
+
+  function addMove(move, expectedMargin) {
+    const prev = frames[frames.length - 1];
+    const mover = frames.length % 2 === 1 ? BLACK : WHITE;
+    let stones = prev.stones, captured = [];
+    if (move !== PASS) {
+      const r = E.play(board, prev.stones, move, mover);
+      stones = r.stones; captured = r.captured;
+    }
+    const caps = { ...prev.caps };
+    caps[mover] += captured.length;
+    frames.push({ stones, mover, move, captured, caps, expectedMargin });
+    const k = frames.length - 1;
+    const tr = document.createElement('tr');
+    tr.className = 'move';
+    tr.innerHTML = `<td>${k}</td><td><span class="dot ${mover === BLACK ? 'b' : 'w'}"></span> ${colorName(mover)}</td>` +
+      `<td>${cellName(move)}</td><td class="${captured.length ? 'cap' : ''}">${captured.length || ''}</td>`;
+    tr.onclick = () => setView(k);
+    $('logBody').appendChild(tr);
+    if (follow) view = k;
+  }
+
+  // ---------- Drawing ----------
+  const centre = ([q, r]) => [R * Math.sqrt(3) * (q + r / 2), R * 1.5 * r];
+  const hexPoints = (cx, cy, rad, off) => Array.from({ length: 6 }, (_, k) => {
+    const a = Math.PI / 180 * (60 * k + off);
+    return (cx + rad * Math.cos(a)).toFixed(2) + ',' + (cy + rad * Math.sin(a)).toFixed(2);
+  }).join(' ');
+  let layer;
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    (parent || svg).appendChild(e);
+    return e;
+  }
+  function buildSvg() {
+    svg.innerHTML = '';
+    const side = board.side, pad = R * 1.4;
+    const w = R * Math.sqrt(3) * (2 * side - 1) + pad * 2, h = R * 1.5 * (2 * side - 2) + 2 * R + pad * 2;
+    svg.setAttribute('viewBox', `${-w / 2} ${-h / 2} ${w} ${h}`);
+    el('polygon', { points: hexPoints(0, 0, R * Math.sqrt(3) * (side - 0.5) + R * 0.6, 0), fill: 'var(--wood-edge)' });
+    for (const c of board.cells) { const [x, y] = centre(c); el('polygon', { points: hexPoints(x, y, R, -30), class: 'cell' }); }
+    layer = el('g', {});
+  }
+
+  function render() {
+    const f = frames[view];
+    layer.innerHTML = '';
+    for (let i = 0; i < board.size; i++) {
+      if (!f.stones[i]) continue;
+      const [x, y] = centre(board.cells[i]);
+      const dead = view === frames.length - 1 && finalDead.has(i);
+      el('circle', { cx: x, cy: y, r: R * 0.78, class: 'stone ' + (f.stones[i] === BLACK ? 'b' : 'w'), opacity: dead ? 0.35 : 1 }, layer);
+    }
+    if (f.move !== null && f.move !== PASS) {
+      const [x, y] = centre(board.cells[f.move]);
+      el('circle', { cx: x, cy: y, r: R * 0.3, class: 'mark-last' }, layer);
+    }
+    // Mark where stones were just captured.
+    for (const c of f.captured) {
+      const [x, y] = centre(board.cells[c]), d = R * 0.35;
+      el('line', { x1: x - d, y1: y - d, x2: x + d, y2: y + d, class: 'mark-cap' }, layer);
+      el('line', { x1: x - d, y1: y + d, x2: x + d, y2: y - d, class: 'mark-cap' }, layer);
+    }
+    // Turn description
+    let what = 'Start of game: empty board.';
+    if (f.mover !== null) {
+      what = `<span class="dot ${f.mover === BLACK ? 'b' : 'w'}"></span> ${colorName(f.mover)} ` +
+        (f.move === PASS ? 'passed.' : `played ${cellName(f.move)}.`);
+      if (f.captured.length) what += ` <span class="cap">Captured ${f.captured.length} stone${f.captured.length > 1 ? 's' : ''}.</span>`;
+      if (f.expectedMargin !== undefined) what += ` <span style="color:var(--muted)">(expects to finish ${leadText(boardLead(f.mover, f.expectedMargin, komi))})</span>`;
+    }
+    $('turnWhat').innerHTML = what;
+    const last = frames.length - 1;
+    $('slider').max = last; $('slider').value = view;
+    $('count').textContent = `Turn ${view} / ${last}`;
+    $('firstBtn').disabled = $('prevBtn').disabled = view === 0;
+    $('nextBtn').disabled = $('lastBtn').disabled = view === last;
+    $('capB').textContent = f.caps[BLACK];
+    $('capW').textContent = f.caps[WHITE];
+    const end = frames[last].caps;
+    $('capBTotal').textContent = `Game total: ${end[BLACK]}${finished ? '' : ' so far'}`;
+    $('capWTotal').textContent = `Game total: ${end[WHITE]}${finished ? '' : ' so far'}`;
+    const rows = $('logBody').children;
+    for (let k = 0; k < rows.length; k++) rows[k].classList.toggle('current', k + 1 === view);
+    if (view > 0 && rows[view - 1]) {
+      const row = rows[view - 1], box = row.closest('.log');
+      if (row.offsetTop < box.scrollTop + 24 || row.offsetTop > box.scrollTop + box.clientHeight - 24) box.scrollTop = row.offsetTop - box.clientHeight / 2;
+    }
+  }
+
+  function setView(k) {
+    view = Math.max(0, Math.min(frames.length - 1, k));
+    follow = view === frames.length - 1 && !finished;
+    render();
+  }
+
+  function showResult(hitLimit) {
+    const last = frames[frames.length - 1];
+    const sc = AI.finalScore(board, last.stones, komi, last.caps);
+    finalDead = sc.dead;
+    const diff = sc.black - sc.white;
+    const who = diff === 0 ? 'Draw' : `${diff > 0 ? 'Black' : 'White'} wins by ${Math.abs(diff)}`;
+    const part = (c) => { const d = sc.detail[c]; return `${d.territory} territory + ${d.captures} captured + ${d.dead} dead`; };
+    $('result').innerHTML = `${who}<br><span style="font-size:13px;font-weight:400">Black ${sc.black}: ${part(BLACK)}<br>` +
+      `White ${sc.white}: ${part(WHITE)} + ${komi} komi${sc.dead.size ? '<br>Dead stones are faded on the last turn.' : ''}</span>`;
+    $('status').textContent = `${frames.length - 1} turns` + (hitLimit ? ', stopped at the turn limit.' : ', ended by two passes.');
+  }
+
+  async function play() {
+    stop();
+    const run = ++runId;
+    komi = +$('komi').value;
+    players = { b: $('pBlack').value, w: $('pWhite').value };
+    reset(+$('sizeSel').value);
+    $('result').textContent = `${label(players.b)} (Black) vs ${label(players.w)} (White)`;
+    $('status').textContent = 'Playing…';
+    $('bar').style.width = '0';
+    $('playBtn').disabled = true; $('stopBtn').disabled = false;
+    render();
+    const msg = { side: board.side, black: parsePlayer(players.b), white: parsePlayer(players.w), komi, seed: Date.now() % 100000 };
+    const onMove = (m) => {
+      if (run !== runId) return;
+      addMove(m.move, m.expectedMargin);
+      // Rough progress: games run about 1.5 turns per cell.
+      $('bar').style.width = Math.min(95, 100 * frames.length / (board.size * 1.5)) + '%';
+      $('status').textContent = `Playing… turn ${frames.length - 1}`;
+      render();
+    };
+    const onDone = (hitLimit) => {
+      if (run !== runId) return;
+      finished = true; follow = false;
+      $('bar').style.width = '100%';
+      $('playBtn').disabled = false; $('stopBtn').disabled = true;
+      showResult(hitLimit);
+      render();
+    };
+    worker = await makeWorker();
+    if (run !== runId) { if (worker) worker.terminate(); return; }
+    if (worker) {
+      worker.onmessage = (e) => e.data.kind === 'move' ? onMove(e.data) : onDone(e.data.hitLimit);
+      worker.postMessage(msg);
+    } else {
+      // No worker available: think on the page, yielding between moves.
+      const b = E.createBoard(msg.side);
+      let s = new Uint8Array(b.size), c = BLACK, passes = 0, n = 0, placed = 0;
+      const hist = new Set([E.keyOf(s)]), limit = b.size * 4;
+      const step = () => {
+        if (run !== runId) return;
+        if (passes >= 2 || n >= limit) return onDone(n >= limit && passes < 2);
+        const r = AI.chooseMove(b, s, c, c === BLACK ? msg.black : msg.white, { komi, seed: msg.seed + n, history: hist, passes, placedBefore: placed });
+        if (r.move === PASS) passes++; else { s = E.play(b, s, r.move, c, hist).stones; hist.add(E.keyOf(s)); passes = 0; placed += c === BLACK ? 1 : -1; }
+        onMove({ move: r.move, expectedMargin: r.expectedMargin }); c = E.other(c); n++;
+        setTimeout(step, 0);
+      };
+      setTimeout(step, 0);
+    }
+  }
+
+  function stop() {
+    if (worker) { worker.terminate(); worker = null; }
+    if (frames && !finished && frames.length > 1) {
+      runId++;
+      finished = true; follow = false;
+      $('status').textContent = `Stopped after ${frames.length - 1} turns.`;
+      render();
+    }
+    $('playBtn').disabled = false; $('stopBtn').disabled = true;
+  }
+
+  $('playBtn').onclick = play;
+  $('stopBtn').onclick = stop;
+  $('slider').oninput = (e) => setView(+e.target.value);
+  $('firstBtn').onclick = () => setView(0);
+  $('prevBtn').onclick = () => setView(view - 1);
+  $('nextBtn').onclick = () => setView(view + 1);
+  $('lastBtn').onclick = () => setView(frames.length - 1);
+  document.addEventListener('keydown', (e) => {
+    if (e.target.matches('input[type=number], select')) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); setView(view - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); setView(view + 1); }
+    if (e.key === 'Home') setView(0);
+    if (e.key === 'End') setView(frames.length - 1);
+  });
+  reset(+$('sizeSel').value);
+  render();
+})();
+</script>
+</body>
+</html>

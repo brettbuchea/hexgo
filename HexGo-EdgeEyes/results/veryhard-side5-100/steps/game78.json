@@ -1,0 +1,5496 @@
+{
+ "game": 78,
+ "side": 5,
+ "black": "mcts:10000",
+ "white": "mcts:10000",
+ "seed": 3781,
+ "steps": [
+  {
+   "move": 1,
+   "player": "Black",
+   "cell": "C4",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . . . . . .",
+    "E . . . . . . . . .",
+    "F  . . . . . . . .",
+    "G   . . . . . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D4",
+      "D5"
+     ],
+     "pair": true,
+     "eyeCells": 60,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 2,
+   "player": "White",
+   "cell": "E6",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . . . . . .",
+    "E . . . . . O . . .",
+    "F  . . . . . . . .",
+    "G   . . . . . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D4",
+      "D5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "E6"
+     ],
+     "liberties": [
+      "D5",
+      "D6",
+      "E5",
+      "E7",
+      "F5",
+      "F6"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 3,
+   "player": "Black",
+   "cell": "D6",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . . . X . .",
+    "E . . . . . O . . .",
+    "F  . . . . . . . .",
+    "G   . . . . . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D4",
+      "D5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C5",
+      "C6",
+      "D5",
+      "D7",
+      "E7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "E6"
+     ],
+     "liberties": [
+      "D5",
+      "E5",
+      "E7",
+      "F5",
+      "F6"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 4,
+   "player": "White",
+   "cell": "E7",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . . . X . .",
+    "E . . . . . O O . .",
+    "F  . . . . . . . .",
+    "G   . . . . . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D4",
+      "D5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C5",
+      "C6",
+      "D5",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "E6",
+      "E7"
+     ],
+     "liberties": [
+      "D5",
+      "D7",
+      "E5",
+      "E8",
+      "F5",
+      "F6",
+      "F7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 5,
+   "player": "Black",
+   "cell": "E5",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . . . X . .",
+    "E . . . . X O O . .",
+    "F  . . . . . . . .",
+    "G   . . . . . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D4",
+      "D5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C5",
+      "C6",
+      "D5",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "E5"
+     ],
+     "liberties": [
+      "D4",
+      "D5",
+      "E4",
+      "F4",
+      "F5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "E6",
+      "E7"
+     ],
+     "liberties": [
+      "D5",
+      "D7",
+      "E8",
+      "F5",
+      "F6",
+      "F7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 6,
+   "player": "White",
+   "cell": "D5",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . . O X . .",
+    "E . . . . X O O . .",
+    "F  . . . . . . . .",
+    "G   . . . . . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D5",
+      "E6",
+      "E7"
+     ],
+     "liberties": [
+      "C5",
+      "D4",
+      "D7",
+      "E8",
+      "F5",
+      "F6",
+      "F7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C5",
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "E5"
+     ],
+     "liberties": [
+      "D4",
+      "E4",
+      "F4",
+      "F5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 7,
+   "player": "Black",
+   "cell": "D4",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . . . . . .",
+    "G   . . . . . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4",
+      "D4",
+      "E5"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D3",
+      "E4",
+      "F4",
+      "F5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D5",
+      "E6",
+      "E7"
+     ],
+     "liberties": [
+      "C5",
+      "D7",
+      "E8",
+      "F5",
+      "F6",
+      "F7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C5",
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 8,
+   "player": "White",
+   "cell": "F5",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . . O . . .",
+    "G   . . . . . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4",
+      "D4",
+      "E5"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D3",
+      "E4",
+      "F4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D5",
+      "E6",
+      "E7",
+      "F5"
+     ],
+     "liberties": [
+      "C5",
+      "D7",
+      "E8",
+      "F4",
+      "F6",
+      "F7",
+      "G4",
+      "G5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C5",
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 9,
+   "player": "Black",
+   "cell": "F4",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . . . . . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4",
+      "D4",
+      "E5",
+      "F4"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D3",
+      "E4",
+      "F3",
+      "G3",
+      "G4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D5",
+      "E6",
+      "E7",
+      "F5"
+     ],
+     "liberties": [
+      "C5",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G4",
+      "G5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C5",
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 10,
+   "player": "White",
+   "cell": "G4",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . . . O . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4",
+      "D4",
+      "E5",
+      "F4"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D3",
+      "E4",
+      "F3",
+      "G3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4"
+     ],
+     "liberties": [
+      "C5",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G3",
+      "G5",
+      "H3",
+      "H4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C5",
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 11,
+   "player": "Black",
+   "cell": "G3",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X . . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . . X O . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G3"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "C5",
+      "D3",
+      "E4",
+      "F3",
+      "G2",
+      "H2",
+      "H3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4"
+     ],
+     "liberties": [
+      "C5",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H3",
+      "H4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C5",
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 12,
+   "player": "White",
+   "cell": "C5",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . . . .",
+    "C   . . . X O . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . . X O . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G3"
+     ],
+     "liberties": [
+      "B3",
+      "B4",
+      "C3",
+      "D3",
+      "E4",
+      "F3",
+      "G2",
+      "H2",
+      "H3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4"
+     ],
+     "liberties": [
+      "B4",
+      "B5",
+      "C6",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H3",
+      "H4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 13,
+   "player": "Black",
+   "cell": "B4",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . X . .",
+    "C   . . . X O . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . . X O . . .",
+    "H    . . . . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G3"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "B3",
+      "B5",
+      "C3",
+      "D3",
+      "E4",
+      "F3",
+      "G2",
+      "H2",
+      "H3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4"
+     ],
+     "liberties": [
+      "B5",
+      "C6",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H3",
+      "H4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 14,
+   "player": "White",
+   "cell": "H3",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . X . .",
+    "C   . . . X O . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . . X O . . .",
+    "H    . . O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G3"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "B3",
+      "B5",
+      "C3",
+      "D3",
+      "E4",
+      "F3",
+      "G2",
+      "H2"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H3"
+     ],
+     "liberties": [
+      "B5",
+      "C6",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H2",
+      "H4",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 15,
+   "player": "Black",
+   "cell": "B5",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . X X .",
+    "C   . . . X O . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . . X O . . .",
+    "H    . . O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "B5",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G3"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "A5",
+      "B3",
+      "B6",
+      "C3",
+      "C6",
+      "D3",
+      "E4",
+      "F3",
+      "G2",
+      "H2"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H3"
+     ],
+     "liberties": [
+      "C6",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H2",
+      "H4",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 16,
+   "player": "White",
+   "cell": "H2",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . X X .",
+    "C   . . . X O . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . . X O . . .",
+    "H    . O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "B5",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G3"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "A5",
+      "B3",
+      "B6",
+      "C3",
+      "C6",
+      "D3",
+      "E4",
+      "F3",
+      "G2"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "C6",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G2",
+      "G5",
+      "H1",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 17,
+   "player": "Black",
+   "cell": "G2",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . X X .",
+    "C   . . . X O . .",
+    "D  . . . X O X . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    . O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "B5",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "A5",
+      "B3",
+      "B6",
+      "C3",
+      "C6",
+      "D3",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "H1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "C6",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H1",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "D6"
+     ],
+     "liberties": [
+      "C6",
+      "D7"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 18,
+   "player": "White",
+   "cell": "C6",
+   "captured": [
+    "D6"
+   ],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . X X .",
+    "C   . . . X O O .",
+    "D  . . . X O . . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    . O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "B5",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "A5",
+      "B3",
+      "B6",
+      "C3",
+      "D3",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "H1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "B6",
+      "C7",
+      "D6",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H1",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 19,
+   "player": "Black",
+   "cell": "H1",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . X X .",
+    "C   . . . X O O .",
+    "D  . . . X O . . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "B5",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "A5",
+      "B3",
+      "B6",
+      "C3",
+      "D3",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "B6",
+      "C7",
+      "D6",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 20,
+   "player": "White",
+   "cell": "D3",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . X X .",
+    "C   . . . X O O .",
+    "D  . . O X O . . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "B5",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "A5",
+      "B3",
+      "B6",
+      "C3",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "B6",
+      "C7",
+      "D6",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "C3",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 21,
+   "player": "Black",
+   "cell": "B6",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . X X X",
+    "C   . . . X O O .",
+    "D  . . O X O . . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "B5",
+      "B6",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "A5",
+      "B3",
+      "C3",
+      "C7",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "C7",
+      "D6",
+      "D7",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "C3",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 22,
+   "player": "White",
+   "cell": "C7",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . . . X X X",
+    "C   . . . X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "B5",
+      "B6",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "A5",
+      "B3",
+      "C3",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "C3",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 23,
+   "player": "Black",
+   "cell": "B2",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X . X X X",
+    "C   . . . X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "B1",
+      "B3",
+      "C2",
+      "C3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "B5",
+      "B6",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "A5",
+      "B3",
+      "C3",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "C3",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 24,
+   "player": "White",
+   "cell": "B3",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   . . . X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "B1",
+      "C2",
+      "C3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3",
+      "C3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B4",
+      "B5",
+      "B6",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1"
+     ],
+     "liberties": [
+      "A3",
+      "A4",
+      "A5",
+      "C3",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "C3",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 25,
+   "player": "Black",
+   "cell": "C3",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   . . X X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O . .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E8",
+      "F6",
+      "F7",
+      "G5",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 26,
+   "player": "White",
+   "cell": "E8",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   . . X X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O O .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     . . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "F8",
+      "G5",
+      "H4",
+      "I1",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 27,
+   "player": "Black",
+   "cell": "I1",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   . . X X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O O .",
+    "F  . . . X O . . .",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     X . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I2"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "F8",
+      "G5",
+      "H4",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 28,
+   "player": "White",
+   "cell": "F8",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   . . X X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O O .",
+    "F  . . . X O . . O",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     X . . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I2"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H4",
+      "I2",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 4,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 29,
+   "player": "Black",
+   "cell": "I2",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   . . X X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O O .",
+    "F  . . . X O . . O",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     X X . . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "E4",
+      "F2",
+      "F3",
+      "G1",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H4",
+      "I3"
+     ],
+     "pair": true,
+     "eyeCells": 4,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 30,
+   "player": "White",
+   "cell": "I3",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   . . X X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O O .",
+    "F  . . . X O . . O",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D4",
+      "E5",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "E4",
+      "F2",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H4",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 14,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 31,
+   "player": "Black",
+   "cell": "F2",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   . . X X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O O .",
+    "F  . X . X O . . O",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D4",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "E2",
+      "E3",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H4",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 14,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 32,
+   "player": "White",
+   "cell": "B1",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    O X O X X X",
+    "C   . . X X O O O",
+    "D  . . O X O . . .",
+    "E . . . . X O O O .",
+    "F  . X . X O . . O",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "White",
+     "stones": [
+      "B1"
+     ],
+     "liberties": [
+      "A1",
+      "C1",
+      "C2"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D4",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "C2",
+      "E2",
+      "E3",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H4",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 14,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 33,
+   "player": "Black",
+   "cell": "E2",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    O X O X X X",
+    "C   . . X X O O O",
+    "D  . . O X O . . .",
+    "E . X . . X O O O .",
+    "F  . X . X O . . O",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "White",
+     "stones": [
+      "B1"
+     ],
+     "liberties": [
+      "A1",
+      "C1",
+      "C2"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D4",
+      "E2",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "C2",
+      "D1",
+      "D2",
+      "E1",
+      "E3",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H4",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 14,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D3"
+     ],
+     "liberties": [
+      "C2",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 34,
+   "player": "White",
+   "cell": "C2",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    O X O X X X",
+    "C   . O X X O O O",
+    "D  . . O X O . . .",
+    "E . X . . X O O O .",
+    "F  . X . X O . . O",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "White",
+     "stones": [
+      "B1",
+      "C2",
+      "D3"
+     ],
+     "liberties": [
+      "A1",
+      "C1",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D4",
+      "E2",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "D1",
+      "D2",
+      "E1",
+      "E3",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H4",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 14,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 35,
+   "player": "Black",
+   "cell": "D1",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    O X O X X X",
+    "C   . O X X O O O",
+    "D  X . O X O . . .",
+    "E . X . . X O O O .",
+    "F  . X . X O . . O",
+    "G   . X X O . . .",
+    "H    X O O . . .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "White",
+     "stones": [
+      "B1",
+      "C2",
+      "D3"
+     ],
+     "liberties": [
+      "A1",
+      "C1",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "C1",
+      "D2",
+      "E1",
+      "E3",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H4",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 14,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 36,
+   "player": "White",
+   "cell": "G6",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    O X O X X X",
+    "C   . O X X O O O",
+    "D  X . O X O . . .",
+    "E . X . . X O O O .",
+    "F  . X . X O . . O",
+    "G   . X X O . O .",
+    "H    X O O . . .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "White",
+     "stones": [
+      "B1",
+      "C2",
+      "D3"
+     ],
+     "liberties": [
+      "A1",
+      "C1",
+      "D2",
+      "E3",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "C1",
+      "D2",
+      "E1",
+      "E3",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H4",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 13,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "G6"
+     ],
+     "liberties": [
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H5",
+      "H6"
+     ],
+     "pair": true,
+     "eyeCells": 9,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 37,
+   "player": "Black",
+   "cell": "E3",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    O X O X X X",
+    "C   . O X X O O O",
+    "D  X . O X O . . .",
+    "E . X X . X O O O .",
+    "F  . X . X O . . O",
+    "G   . X X O . O .",
+    "H    X O O . . .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "White",
+     "stones": [
+      "B1",
+      "C2",
+      "D3"
+     ],
+     "liberties": [
+      "A1",
+      "C1",
+      "D2",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "C1",
+      "D2",
+      "E1",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H4",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 13,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "G6"
+     ],
+     "liberties": [
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H5",
+      "H6"
+     ],
+     "pair": true,
+     "eyeCells": 9,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 38,
+   "player": "White",
+   "cell": "H4",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    O X O X X X",
+    "C   . O X X O O O",
+    "D  X . O X O . . .",
+    "E . X X . X O O O .",
+    "F  . X . X O . . O",
+    "G   . X X O . O .",
+    "H    X O O O . .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "White",
+     "stones": [
+      "B1",
+      "C2",
+      "D3"
+     ],
+     "liberties": [
+      "A1",
+      "C1",
+      "D2",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "C1",
+      "D2",
+      "E1",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3",
+      "H4",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H5",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 12,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "G6"
+     ],
+     "liberties": [
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H5",
+      "H6"
+     ],
+     "pair": true,
+     "eyeCells": 8,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 39,
+   "player": "Black",
+   "cell": "H5",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    O X O X X X",
+    "C   . O X X O O O",
+    "D  X . O X O . . .",
+    "E . X X . X O O O .",
+    "F  . X . X O . . O",
+    "G   . X X O . O .",
+    "H    X O O O X .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "White",
+     "stones": [
+      "B1",
+      "C2",
+      "D3"
+     ],
+     "liberties": [
+      "A1",
+      "C1",
+      "D2",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "C1",
+      "D2",
+      "E1",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F8",
+      "G4",
+      "H2",
+      "H3",
+      "H4",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 4,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "G6"
+     ],
+     "liberties": [
+      "F6",
+      "F7",
+      "G5",
+      "G7",
+      "H6"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "H5"
+     ],
+     "liberties": [
+      "G5",
+      "H6",
+      "I4",
+      "I5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 40,
+   "player": "White",
+   "cell": "F6",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    O X O X X X",
+    "C   . O X X O O O",
+    "D  X . O X O . . .",
+    "E . X X . X O O O .",
+    "F  . X . X O O . O",
+    "G   . X X O . O .",
+    "H    X O O O X .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "White",
+     "stones": [
+      "B1",
+      "C2",
+      "D3"
+     ],
+     "liberties": [
+      "A1",
+      "C1",
+      "D2",
+      "E4"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "C1",
+      "D2",
+      "E1",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F6",
+      "F8",
+      "G4",
+      "G6",
+      "H2",
+      "H3",
+      "H4",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F7",
+      "G5",
+      "G7",
+      "H6",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 4,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "H5"
+     ],
+     "liberties": [
+      "G5",
+      "H6",
+      "I4",
+      "I5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 41,
+   "player": "Black",
+   "cell": "C1",
+   "captured": [
+    "B1",
+    "C2",
+    "D3"
+   ],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   X . X X O O O",
+    "D  X . . X O . . .",
+    "E . X X . X O O O .",
+    "F  . X . X O O . O",
+    "G   . X X O . O .",
+    "H    X O O O X .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C1",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "D2",
+      "D3",
+      "E1",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F6",
+      "F8",
+      "G4",
+      "G6",
+      "H2",
+      "H3",
+      "H4",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F7",
+      "G5",
+      "G7",
+      "H6",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 4,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "H5"
+     ],
+     "liberties": [
+      "G5",
+      "H6",
+      "I4",
+      "I5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 42,
+   "player": "White",
+   "cell": "I5",
+   "captured": [
+    "H5"
+   ],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   X . X X O O O",
+    "D  X . . X O . . .",
+    "E . X X . X O O O .",
+    "F  . X . X O O . O",
+    "G   . X X O . O .",
+    "H    X O O O . .",
+    "I     X X O . O"
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C1",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "D2",
+      "D3",
+      "E1",
+      "E4",
+      "F1",
+      "F3",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F6",
+      "F8",
+      "G4",
+      "G6",
+      "H2",
+      "H3",
+      "H4",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F7",
+      "G5",
+      "G7",
+      "H5",
+      "H6",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 10,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "I5"
+     ],
+     "liberties": [
+      "H5",
+      "H6",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 6,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 43,
+   "player": "Black",
+   "cell": "F3",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   X . X X O O O",
+    "D  X . . X O . . .",
+    "E . X X . X O O O .",
+    "F  . X X X O O . O",
+    "G   . X X O . O .",
+    "H    X O O O . .",
+    "I     X X O . O"
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C1",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F3",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "D2",
+      "D3",
+      "E1",
+      "E4",
+      "F1",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F6",
+      "F8",
+      "G4",
+      "G6",
+      "H2",
+      "H3",
+      "H4",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F7",
+      "G5",
+      "G7",
+      "H5",
+      "H6",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 10,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "I5"
+     ],
+     "liberties": [
+      "H5",
+      "H6",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 6,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 44,
+   "player": "White",
+   "cell": "D2",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   X . X X O O O",
+    "D  X O . X O . . .",
+    "E . X X . X O O O .",
+    "F  . X X X O O . O",
+    "G   . X X O . O .",
+    "H    X O O O . .",
+    "I     X X O . O"
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C1",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F3",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "D3",
+      "E1",
+      "E4",
+      "F1",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F6",
+      "F8",
+      "G4",
+      "G6",
+      "H2",
+      "H3",
+      "H4",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F7",
+      "G5",
+      "G7",
+      "H5",
+      "H6",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 10,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D2"
+     ],
+     "liberties": [
+      "C2",
+      "D3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "I5"
+     ],
+     "liberties": [
+      "H5",
+      "H6",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 6,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 45,
+   "player": "Black",
+   "cell": "H5",
+   "captured": [
+    "I5"
+   ],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   X . X X O O O",
+    "D  X O . X O . . .",
+    "E . X X . X O O O .",
+    "F  . X X X O O . O",
+    "G   . X X O . O .",
+    "H    X O O O X .",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C1",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F3",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "D3",
+      "E1",
+      "E4",
+      "F1",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F6",
+      "F8",
+      "G4",
+      "G6",
+      "H2",
+      "H3",
+      "H4",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F7",
+      "G5",
+      "G7",
+      "H6",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 4,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D2"
+     ],
+     "liberties": [
+      "C2",
+      "D3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "H5"
+     ],
+     "liberties": [
+      "G5",
+      "H6",
+      "I4",
+      "I5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 46,
+   "player": "White",
+   "cell": "H6",
+   "captured": [],
+   "issues": [],
+   "board": [
+    "A     . . . . .",
+    "B    . X O X X X",
+    "C   X . X X O O O",
+    "D  X O . X O . . .",
+    "E . X X . X O O O .",
+    "F  . X X X O O . O",
+    "G   . X X O . O .",
+    "H    X O O O X O",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C1",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F3",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "C2",
+      "D3",
+      "E1",
+      "E4",
+      "F1",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 3,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "B3"
+     ],
+     "liberties": [
+      "A2",
+      "A3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F6",
+      "F8",
+      "G4",
+      "G6",
+      "H2",
+      "H3",
+      "H4",
+      "H6",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F7",
+      "G5",
+      "G7",
+      "I4",
+      "I5"
+     ],
+     "pair": true,
+     "eyeCells": 6,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D2"
+     ],
+     "liberties": [
+      "C2",
+      "D3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "H5"
+     ],
+     "liberties": [
+      "G5",
+      "I4",
+      "I5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 47,
+   "player": "Black",
+   "cell": "A2",
+   "captured": [
+    "B3"
+   ],
+   "issues": [],
+   "board": [
+    "A     . X . . .",
+    "B    . X . X X X",
+    "C   X . X X O O O",
+    "D  X O . X O . . .",
+    "E . X X . X O O O .",
+    "F  . X X X O O . O",
+    "G   . X X O . O .",
+    "H    X O O O X O",
+    "I     X X O . ."
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "A2",
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C1",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F3",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "B3",
+      "C2",
+      "D3",
+      "E1",
+      "E4",
+      "F1",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 7,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F6",
+      "F8",
+      "G4",
+      "G6",
+      "H2",
+      "H3",
+      "H4",
+      "H6",
+      "I3"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F7",
+      "G5",
+      "G7",
+      "I4",
+      "I5"
+     ],
+     "pair": true,
+     "eyeCells": 6,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D2"
+     ],
+     "liberties": [
+      "C2",
+      "D3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    },
+    {
+     "colour": "Black",
+     "stones": [
+      "H5"
+     ],
+     "liberties": [
+      "G5",
+      "I4",
+      "I5"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 48,
+   "player": "White",
+   "cell": "I5",
+   "captured": [
+    "H5"
+   ],
+   "issues": [],
+   "board": [
+    "A     . X . . .",
+    "B    . X . X X X",
+    "C   X . X X O O O",
+    "D  X O . X O . . .",
+    "E . X X . X O O O .",
+    "F  . X X X O O . O",
+    "G   . X X O . O .",
+    "H    X O O O . O",
+    "I     X X O . O"
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "A2",
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C1",
+      "C3",
+      "C4",
+      "D1",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F3",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "B3",
+      "C2",
+      "D3",
+      "E1",
+      "E4",
+      "F1",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 7,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F6",
+      "F8",
+      "G4",
+      "G6",
+      "H2",
+      "H3",
+      "H4",
+      "H6",
+      "I3",
+      "I5"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F7",
+      "G5",
+      "G7",
+      "H5",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 9,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "D2"
+     ],
+     "liberties": [
+      "C2",
+      "D3"
+     ],
+     "pair": true,
+     "eyeCells": 0,
+     "alive": true,
+     "inDanger": true
+    }
+   ]
+  },
+  {
+   "move": 49,
+   "player": "Black",
+   "cell": "D3",
+   "captured": [
+    "D2"
+   ],
+   "issues": [],
+   "board": [
+    "A     . X . . .",
+    "B    . X . X X X",
+    "C   X . X X O O O",
+    "D  X . X X O . . .",
+    "E . X X . X O O O .",
+    "F  . X X X O O . O",
+    "G   . X X O . O .",
+    "H    X O O O . O",
+    "I     X X O . O"
+   ],
+   "groups": [
+    {
+     "colour": "Black",
+     "stones": [
+      "A2",
+      "B2",
+      "B4",
+      "B5",
+      "B6",
+      "C1",
+      "C3",
+      "C4",
+      "D1",
+      "D3",
+      "D4",
+      "E2",
+      "E3",
+      "E5",
+      "F2",
+      "F3",
+      "F4",
+      "G2",
+      "G3",
+      "H1",
+      "I1",
+      "I2"
+     ],
+     "liberties": [
+      "A1",
+      "A3",
+      "A4",
+      "A5",
+      "B1",
+      "B3",
+      "C2",
+      "D2",
+      "E1",
+      "E4",
+      "F1",
+      "G1"
+     ],
+     "pair": true,
+     "eyeCells": 12,
+     "alive": true,
+     "inDanger": false
+    },
+    {
+     "colour": "White",
+     "stones": [
+      "C5",
+      "C6",
+      "C7",
+      "D5",
+      "E6",
+      "E7",
+      "E8",
+      "F5",
+      "F6",
+      "F8",
+      "G4",
+      "G6",
+      "H2",
+      "H3",
+      "H4",
+      "H6",
+      "I3",
+      "I5"
+     ],
+     "liberties": [
+      "D6",
+      "D7",
+      "D8",
+      "E9",
+      "F7",
+      "G5",
+      "G7",
+      "H5",
+      "I4"
+     ],
+     "pair": true,
+     "eyeCells": 9,
+     "alive": true,
+     "inDanger": false
+    }
+   ]
+  },
+  {
+   "move": 50,
+   "player": "White",
+   "cell": "pass",
+   "captured": [],
+   "issues": []
+  },
+  {
+   "move": 51,
+   "player": "Black",
+   "cell": "pass",
+   "captured": [],
+   "issues": []
+  }
+ ],
+ "final": {
+  "board": [
+   "A     b X b b b",
+   "B    b X b X X X",
+   "C   X b X X O O O",
+   "D  X b X X O w w w",
+   "E b X X b X O O O w",
+   "F  b X X X O O w O",
+   "G   b X X O w O w",
+   "H    X O O O w O",
+   "I     X X O w O"
+  ],
+  "groups": [
+   {
+    "colour": "Black",
+    "stones": [
+     "A2",
+     "B2",
+     "B4",
+     "B5",
+     "B6",
+     "C1",
+     "C3",
+     "C4",
+     "D1",
+     "D3",
+     "D4",
+     "E2",
+     "E3",
+     "E5",
+     "F2",
+     "F3",
+     "F4",
+     "G2",
+     "G3",
+     "H1",
+     "I1",
+     "I2"
+    ],
+    "status": "alive",
+    "capturableByForce": false
+   },
+   {
+    "colour": "White",
+    "stones": [
+     "C5",
+     "C6",
+     "C7",
+     "D5",
+     "E6",
+     "E7",
+     "E8",
+     "F5",
+     "F6",
+     "F8",
+     "G4",
+     "G6",
+     "H2",
+     "H3",
+     "H4",
+     "H6",
+     "I3",
+     "I5"
+    ],
+    "status": "alive",
+    "capturableByForce": false
+   }
+  ],
+  "dead": [],
+  "neutral": [],
+  "score": {
+   "black": 18,
+   "white": 12,
+   "detail": {
+    "black": {
+     "territory": 12,
+     "captures": 6,
+     "dead": 0,
+     "stones": 22
+    },
+    "white": {
+     "territory": 9,
+     "captures": 3,
+     "dead": 0,
+     "stones": 18
+    }
+   }
+  }
+ },
+ "issues": []
+}

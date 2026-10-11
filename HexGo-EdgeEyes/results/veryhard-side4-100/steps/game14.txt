@@ -1,0 +1,347 @@
+HexGo game 14: mcts:10000 (Black, X) vs mcts:10000 (White, O), 4 per side, seed 6141
+Cells are named row letter + position in the row, counted from the left.
+
+Start: empty board
+A    . . . .
+B   . . . . .
+C  . . . . . .
+D . . . . . . .
+E  . . . . . .
+F   . . . . .
+G    . . . .
+
+Move 1: Black D4   (captured so far: Black 0, White 0)
+A    . . . .
+B   . . . . .
+C  . . . . . .
+D . . . x . . .
+E  . . . . . .
+F   . . . . .
+G    . . . .
+  Black [D4]  liberties C3,C4,D3,D5,E3,E4  pair yes  eye cells 36  alive
+
+Move 2: White C3   (captured so far: Black 0, White 0)
+A    . . . .
+B   . . . . .
+C  . . o . . .
+D . . . X . . .
+E  . . . . . .
+F   . . . . .
+G    . . . .
+  White [C3]  liberties B2,B3,C2,C4,D3  pair yes  eye cells 0  alive
+  Black [D4]  liberties C4,D3,D5,E3,E4  pair yes  eye cells 0  alive
+
+Move 3: Black C4   (captured so far: Black 0, White 0)
+A    . . . .
+B   . . . . .
+C  . . O x . .
+D . . . X . . .
+E  . . . . . .
+F   . . . . .
+G    . . . .
+  White [C3]  liberties B2,B3,C2,D3  pair yes  eye cells 0  alive
+  Black [C4,D4]  liberties B3,B4,C5,D3,D5,E3,E4  pair yes  eye cells 0  alive
+
+Move 4: White D3   (captured so far: Black 0, White 0)
+A    . . . .
+B   . . . . .
+C  . . O X . .
+D . . o X . . .
+E  . . . . . .
+F   . . . . .
+G    . . . .
+  White [C3,D3]  liberties B2,B3,C2,D2,E2,E3  pair yes  eye cells 0  alive
+  Black [C4,D4]  liberties B3,B4,C5,D5,E3,E4  pair yes  eye cells 0  alive
+
+Move 5: Black E3   (captured so far: Black 0, White 0)
+A    . . . .
+B   . . . . .
+C  . . O X . .
+D . . O X . . .
+E  . . x . . .
+F   . . . . .
+G    . . . .
+  White [C3,D3]  liberties B2,B3,C2,D2,E2  pair yes  eye cells 0  alive
+  Black [C4,D4,E3]  liberties B3,B4,C5,D5,E2,E4,F2,F3  pair yes  eye cells 0  alive
+
+Move 6: White E2   (captured so far: Black 0, White 0)
+A    . . . .
+B   . . . . .
+C  . . O X . .
+D . . O X . . .
+E  . o X . . .
+F   . . . . .
+G    . . . .
+  White [C3,D3,E2]  liberties B2,B3,C2,D2,E1,F1,F2  pair yes  eye cells 0  alive
+  Black [C4,D4,E3]  liberties B3,B4,C5,D5,E4,F2,F3  pair yes  eye cells 0  alive
+
+Move 7: Black B3   (captured so far: Black 0, White 0)
+A    . . . .
+B   . . x . .
+C  . . O X . .
+D . . O X . . .
+E  . O X . . .
+F   . . . . .
+G    . . . .
+  Black [B3,C4,D4,E3]  liberties A2,A3,B2,B4,C5,D5,E4,F2,F3  pair yes  eye cells 0  alive
+  White [C3,D3,E2]  liberties B2,C2,D2,E1,F1,F2  pair yes  eye cells 0  alive
+
+Move 8: White F2   (captured so far: Black 0, White 0)
+A    . . . .
+B   . . X . .
+C  . . O X . .
+D . . O X . . .
+E  . O X . . .
+F   . o . . .
+G    . . . .
+  Black [B3,C4,D4,E3]  liberties A2,A3,B2,B4,C5,D5,E4,F3  pair yes  eye cells 0  alive
+  White [C3,D3,E2,F2]  liberties B2,C2,D2,E1,F1,F3,G1,G2  pair yes  eye cells 0  alive
+
+Move 9: Black F3   (captured so far: Black 0, White 0)
+A    . . . .
+B   . . X . .
+C  . . O X . .
+D . . O X . . .
+E  . O X . . .
+F   . O x . .
+G    . . . .
+  Black [B3,C4,D4,E3,F3]  liberties A2,A3,B2,B4,C5,D5,E4,F4,G2,G3  pair yes  eye cells 0  alive
+  White [C3,D3,E2,F2]  liberties B2,C2,D2,E1,F1,G1,G2  pair yes  eye cells 0  alive
+
+Move 10: White B2   (captured so far: Black 0, White 0)
+A    . . . .
+B   . o X . .
+C  . . O X . .
+D . . O X . . .
+E  . O X . . .
+F   . O X . .
+G    . . . .
+  White [B2,C3,D3,E2,F2]  liberties A1,A2,B1,C2,D2,E1,F1,G1,G2  pair yes  eye cells 0  alive
+  Black [B3,C4,D4,E3,F3]  liberties A2,A3,B4,C5,D5,E4,F4,G2,G3  pair yes  eye cells 0  alive
+
+Move 11: Black A2   (captured so far: Black 0, White 0)
+A    . x . .
+B   . O X . .
+C  . . O X . .
+D . . O X . . .
+E  . O X . . .
+F   . O X . .
+G    . . . .
+  Black [A2,B3,C4,D4,E3,F3]  liberties A1,A3,B4,C5,D5,E4,F4,G2,G3  pair yes  eye cells 0  alive
+  White [B2,C3,D3,E2,F2]  liberties A1,B1,C2,D2,E1,F1,G1,G2  pair yes  eye cells 0  alive
+
+Move 12: White G2   (captured so far: Black 0, White 0)
+A    . X . .
+B   . O X . .
+C  . . O X . .
+D . . O X . . .
+E  . O X . . .
+F   . O X . .
+G    . o . .
+  Black [A2,B3,C4,D4,E3,F3]  liberties A1,A3,B4,C5,D5,E4,F4,G3  pair yes  eye cells 0  alive
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1,G3  pair yes  eye cells 0  alive
+
+Move 13: Black B1   (captured so far: Black 0, White 0)
+A    . X . .
+B   x O X . .
+C  . . O X . .
+D . . O X . . .
+E  . O X . . .
+F   . O X . .
+G    . O . .
+  Black [A2,B3,C4,D4,E3,F3]  liberties A1,A3,B4,C5,D5,E4,F4,G3  pair yes  eye cells 0  alive
+  Black [B1]  liberties A1,C1,C2  pair yes  eye cells 0  alive (can be captured next move)
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,C2,D2,E1,F1,G1,G3  pair yes  eye cells 0  alive
+
+Move 14: White C1 - captures 1: B1   (captured so far: Black 0, White 1)
+A    . X . .
+B   . O X . .
+C  o . O X . .
+D . . O X . . .
+E  . O X . . .
+F   . O X . .
+G    . O . .
+  Black [A2,B3,C4,D4,E3,F3]  liberties A1,A3,B4,C5,D5,E4,F4,G3  pair yes  eye cells 0  alive
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1,G3  pair yes  eye cells 0  alive
+  White [C1]  liberties B1,C2,D1,D2  pair yes  eye cells 0  alive
+
+Move 15: Black G3   (captured so far: Black 0, White 1)
+A    . X . .
+B   . O X . .
+C  O . O X . .
+D . . O X . . .
+E  . O X . . .
+F   . O X . .
+G    . O x .
+  Black [A2,B3,C4,D4,E3,F3,G3]  liberties A1,A3,B4,C5,D5,E4,F4,G4  pair yes  eye cells 15  alive
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1  pair yes  eye cells 0  alive
+  White [C1]  liberties B1,C2,D1,D2  pair yes  eye cells 0  alive
+
+Move 16: White C5   (captured so far: Black 0, White 1)
+A    . X . .
+B   . O X . .
+C  O . O X o .
+D . . O X . . .
+E  . O X . . .
+F   . O X . .
+G    . O X .
+  Black [A2,B3,C4,D4,E3,F3,G3]  liberties A1,A3,B4,D5,E4,F4,G4  pair yes  eye cells 0  alive
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1  pair yes  eye cells 0  alive
+  White [C1]  liberties B1,C2,D1,D2  pair yes  eye cells 0  alive
+  White [C5]  liberties B4,B5,C6,D5,D6  pair yes  eye cells 0  alive
+
+Move 17: Black D6   (captured so far: Black 0, White 1)
+A    . X . .
+B   . O X . .
+C  O . O X O .
+D . . O X . x .
+E  . O X . . .
+F   . O X . .
+G    . O X .
+  Black [A2,B3,C4,D4,E3,F3,G3]  liberties A1,A3,B4,D5,E4,F4,G4  pair yes  eye cells 0  alive
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1  pair yes  eye cells 0  alive
+  White [C1]  liberties B1,C2,D1,D2  pair yes  eye cells 0  alive
+  White [C5]  liberties B4,B5,C6,D5  pair yes  eye cells 0  alive (can be captured next move)
+  Black [D6]  liberties C6,D5,D7,E5,E6  pair yes  eye cells 0  alive
+
+Move 18: White D5   (captured so far: Black 0, White 1)
+A    . X . .
+B   . O X . .
+C  O . O X O .
+D . . O X o X .
+E  . O X . . .
+F   . O X . .
+G    . O X .
+  Black [A2,B3,C4,D4,E3,F3,G3]  liberties A1,A3,B4,E4,F4,G4  pair yes  eye cells 0  alive
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1  pair yes  eye cells 0  alive
+  White [C1]  liberties B1,C2,D1,D2  pair yes  eye cells 0  alive
+  White [C5,D5]  liberties B4,B5,C6,E4,E5  pair yes  eye cells 0  alive
+  Black [D6]  liberties C6,D7,E5,E6  pair yes  eye cells 0  alive
+
+Move 19: Black E5   (captured so far: Black 0, White 1)
+A    . X . .
+B   . O X . .
+C  O . O X O .
+D . . O X O X .
+E  . O X . x .
+F   . O X . .
+G    . O X .
+  Black [A2,B3,C4,D4,E3,F3,G3]  liberties A1,A3,B4,E4,F4,G4  pair yes  eye cells 0  alive
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1  pair yes  eye cells 0  alive
+  White [C1]  liberties B1,C2,D1,D2  pair yes  eye cells 0  alive
+  White [C5,D5]  liberties B4,B5,C6,E4  pair yes  eye cells 0  alive (can be captured next move)
+  Black [D6,E5]  liberties C6,D7,E4,E6,F4,F5  pair yes  eye cells 0  alive
+
+Move 20: White B4   (captured so far: Black 0, White 1)
+A    . X . .
+B   . O X o .
+C  O . O X O .
+D . . O X O X .
+E  . O X . X .
+F   . O X . .
+G    . O X .
+  Black [A2,B3,C4,D4,E3,F3,G3]  liberties A1,A3,E4,F4,G4  pair yes  eye cells 0  alive (can be captured next move)
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1  pair yes  eye cells 0  alive
+  White [B4,C5,D5]  liberties A3,A4,B5,C6,E4  pair yes  eye cells 0  alive
+  White [C1]  liberties B1,C2,D1,D2  pair yes  eye cells 0  alive
+  Black [D6,E5]  liberties C6,D7,E4,E6,F4,F5  pair yes  eye cells 0  alive
+
+Move 21: Black E4   (captured so far: Black 0, White 1)
+A    . X . .
+B   . O X O .
+C  O . O X O .
+D . . O X O X .
+E  . O X x X .
+F   . O X . .
+G    . O X .
+  Black [A2,B3,C4,D4,D6,E3,E4,E5,F3,G3]  liberties A1,A3,C6,D7,E6,F4,F5,G4  pair yes  eye cells 0  alive
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1  pair yes  eye cells 0  alive
+  White [B4,C5,D5]  liberties A3,A4,B5,C6  pair yes  eye cells 0  alive
+  White [C1]  liberties B1,C2,D1,D2  pair yes  eye cells 0  alive
+
+Move 22: White C6   (captured so far: Black 0, White 1)
+A    . X . .
+B   . O X O .
+C  O . O X O o
+D . . O X O X .
+E  . O X X X .
+F   . O X . .
+G    . O X .
+  Black [A2,B3,C4,D4,D6,E3,E4,E5,F3,G3]  liberties A1,A3,D7,E6,F4,F5,G4  pair yes  eye cells 0  alive
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1  pair yes  eye cells 0  alive
+  White [B4,C5,C6,D5]  liberties A3,A4,B5,D7  pair yes  eye cells 0  alive (can be captured next move)
+  White [C1]  liberties B1,C2,D1,D2  pair yes  eye cells 0  alive
+
+Move 23: Black A4 - captures 4: B4,C5,C6,D5   (captured so far: Black 4, White 1)
+A    . X . x
+B   . O X . .
+C  O . O X . .
+D . . O X . X .
+E  . O X X X .
+F   . O X . .
+G    . O X .
+  Black [A2,B3,C4,D4,D6,E3,E4,E5,F3,G3]  liberties A1,A3,B4,C5,C6,D5,D7,E6,F4,F5,G4  pair yes  eye cells 11  alive
+  Black [A4]  liberties A3,B4,B5  pair yes  eye cells 11  alive (can be captured next move)
+  White [B2,C3,D3,E2,F2,G2]  liberties A1,B1,C2,D2,E1,F1,G1  pair yes  eye cells 0  alive
+  White [C1]  liberties B1,C2,D1,D2  pair yes  eye cells 0  alive
+
+Move 24: White D2   (captured so far: Black 4, White 1)
+A    . X . X
+B   . O X . .
+C  O . O X . .
+D . o O X . X .
+E  . O X X X .
+F   . O X . .
+G    . O X .
+  Black [A2,B3,C4,D4,D6,E3,E4,E5,F3,G3]  liberties A1,A3,B4,C5,C6,D5,D7,E6,F4,F5,G4  pair yes  eye cells 11  alive
+  Black [A4]  liberties A3,B4,B5  pair yes  eye cells 11  alive (can be captured next move)
+  White [B2,C1,C3,D2,D3,E2,F2,G2]  liberties A1,B1,C2,D1,E1,F1,G1  pair yes  eye cells 4  alive
+
+Move 25: Black C6   (captured so far: Black 4, White 1)
+A    . X . X
+B   . O X . .
+C  O . O X . x
+D . O O X . X .
+E  . O X X X .
+F   . O X . .
+G    . O X .
+  Black [A2,B3,C4,C6,D4,D6,E3,E4,E5,F3,G3]  liberties A1,A3,B4,B5,C5,D5,D7,E6,F4,F5,G4  pair yes  eye cells 10  alive
+  Black [A4]  liberties A3,B4,B5  pair yes  eye cells 5  alive (can be captured next move)
+  White [B2,C1,C3,D2,D3,E2,F2,G2]  liberties A1,B1,C2,D1,E1,F1,G1  pair yes  eye cells 4  alive
+
+Move 26: White A1   (captured so far: Black 4, White 1)
+A    o X . X
+B   . O X . .
+C  O . O X . X
+D . O O X . X .
+E  . O X X X .
+F   . O X . .
+G    . O X .
+  White [A1,B2,C1,C3,D2,D3,E2,F2,G2]  liberties B1,C2,D1,E1,F1,G1  pair yes  eye cells 6  alive
+  Black [A2,B3,C4,C6,D4,D6,E3,E4,E5,F3,G3]  liberties A3,B4,B5,C5,D5,D7,E6,F4,F5,G4  pair yes  eye cells 10  alive
+  Black [A4]  liberties A3,B4,B5  pair yes  eye cells 5  alive (can be captured next move)
+
+Move 27: Black passes
+
+Move 28: White passes
+
+==== Final board ====
+X/O stones · x/o dead stones (removed as captured) · b/w territory · . neutral
+A    O X b X
+B   w O X b b
+C  O w O X b X
+D w O O X b X b
+E  w O X X X b
+F   w O X b b
+G    w O X b
+
+  White [A1,B2,C1,C3,D2,D3,E2,F2,G2]  alive
+  Black [A2,B3,C4,C6,D4,D6,E3,E4,E5,F3,G3]  alive
+  Black [A4]  alive
+
+Black: territory 10 + captured 4 + dead stones 0 = 14
+White: territory 6 + captured 1 + dead stones 0 = 7
+Difference (B - W): 7
+Neutral cells: none
+
+No issues found.
