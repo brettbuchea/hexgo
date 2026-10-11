@@ -212,8 +212,6 @@
     .cmp thead th:nth-child(2) { width: 30%; }
   }
 
-  footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
-  footer p { max-width: 80ch; }
   @media (prefers-reduced-motion: reduce) { .thinking::after { animation: none; } }
 </style>
 
@@ -242,7 +240,7 @@
       <div class="hero">
         <div class="hero-text">
           <h1>Go, played on hexagons.</h1>
-          <p class="lead">HexGo keeps the heart of Go: place stones, surround space, capture what you cut off. The six-sided cells change how groups live, and the edge of the board helps you build eyes.</p>
+          <p class="lead">HexGo keeps the heart of Go: place stones, build territory, and capture the enemy you cut off. The six-sided cells change how groups live and die.</p>
           <div class="row">
             <a class="btn primary big" href="#play" data-go="play">Play</a>
             <a class="btn big" href="#learn" data-go="learn">Learn the rules</a>
@@ -256,7 +254,7 @@
       <div class="facts">
         <div class="fact"><b>6</b><span>neighbours for every cell away from the edge, where a Go point has four.</span></div>
         <div class="fact"><b>3</b><span>stones capture a lone stone in the open. Two do it on the edge, one in a corner.</span></div>
-        <div class="fact"><b>2</b><span>empty cells that touch each other keep a group on the board. One liberty is not enough.</span></div>
+        <div class="fact"><b>2</b><span>empty cells that touch each other, a liberty pair, keep a group alive on the board. One liberty is not enough.</span></div>
       </div>
     </section>
 
@@ -627,10 +625,6 @@
     </section>
   </main>
 
-  <footer class="small">
-    <p>HexGo, Edge Eyes rules. The computer players use Monte Carlo tree search and run in your browser.</p>
-    <p>No accounts and no cookies. Your games and settings are kept in this browser only. An online game's moves are kept on the game server until 2 days after the last move. To stop misuse, the server counts new games per internet address for one day, in a scrambled form. The public site counts visits with Cloudflare Web Analytics.</p>
-  </footer>
 </div>
 
 <script>// HexGo Edge Eyes rules engine — HexGo where areas closed off by your stones and the board edge
