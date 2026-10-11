@@ -11,7 +11,7 @@ over WebSockets.
   its seat back later. The server stores only a hash of it.
 - After two passes either player can mark groups dead or resume play. A player can resign.
 - A game is deleted after 2 days without a move.
-- New games are limited to 3 a minute and 20 a day from one internet address, and 300 a day from
+- New games are limited to 3 a minute and 20 a day from one internet address, and 20 a day from
   everyone together. Addresses are counted in scrambled form and the counts are replaced each day.
 
 ## Files

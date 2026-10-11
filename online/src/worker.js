@@ -43,7 +43,7 @@ async function hashOf(secret) {
 }
 
 // Limits on new games. One visitor is one internet address.
-const NEW_PER_MINUTE = 3, NEW_PER_DAY = 20, NEW_PER_DAY_EVERYONE = 300;
+const NEW_PER_MINUTE = 3, NEW_PER_DAY = 20, NEW_PER_DAY_EVERYONE = 20;
 
 // True if this request is within the named Cloudflare limit (see wrangler.toml).
 async function allowed(limiter, key) {
