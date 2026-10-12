@@ -17,7 +17,7 @@ new_sqlite_classes = ["Game"]
 
 [vars]
 # Pages allowed to use the server (comma-separated). A page on localhost is always allowed.
-ALLOWED_ORIGINS = "https://brettbuchea.github.io,https://hexgo-online.brett-buchea.workers.dev"
+ALLOWED_ORIGINS = "https://playhexgo.com,https://brettbuchea.github.io,https://hexgo-online.brett-buchea.workers.dev"
 
 # Counts new games so nobody can flood the server (see Limiter in src/worker.js).
 [[durable_objects.bindings]]

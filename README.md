@@ -2,7 +2,7 @@
 
 Go on a hexagonal board. A group needs a liberty pair (two touching empty cells) or a pair of
 eyes to stay on the board, and the edge of the board helps close off eyes. Play it at
-https://brettbuchea.github.io/hexgo/.
+https://playhexgo.com.
 
 | Folder | What it holds |
 | --- | --- |
