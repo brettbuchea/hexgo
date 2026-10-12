@@ -2,6 +2,10 @@ name = "hexgo-online"
 main = "src/worker.js"
 compatibility_date = "2026-01-01"
 
+# The website itself (built by site/build.js). Any address that is not a file there goes to the Worker.
+[assets]
+directory = "../docs"
+
 # One Game object per online game; it holds the moves and relays them to both players.
 [[durable_objects.bindings]]
 name = "GAMES"
@@ -13,7 +17,7 @@ new_sqlite_classes = ["Game"]
 
 [vars]
 # Pages allowed to use the server (comma-separated). A page on localhost is always allowed.
-ALLOWED_ORIGINS = "https://brettbuchea.github.io"
+ALLOWED_ORIGINS = "https://brettbuchea.github.io,https://hexgo-online.brett-buchea.workers.dev"
 
 # Counts new games so nobody can flood the server (see Limiter in src/worker.js).
 [[durable_objects.bindings]]
